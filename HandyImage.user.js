@@ -889,6 +889,7 @@
 // @match		https://imgjjtr.sbs/*
 // @match		https://tezzpic.com/*.php
 // @match		https://clip2net.com/s/*
+// @match               https://bdsmlust.com/bdsm-covers/image/*
 // ==/UserScript==
 
 "use strict";
@@ -898,7 +899,7 @@ console.debug("HandyImage Script running");
 if (typeof unsafeWindow === "undefined")
 {
 	unsafeWindow = window;
-	console.warn("unsafeWindow missing");
+    console.warn("unsafeWindow missing");
 }
 
 if (typeof GM_registerMenuCommand !== "undefined")
@@ -907,10 +908,10 @@ if (typeof GM_registerMenuCommand !== "undefined")
 }
 
 if(window.location.href.lastIndexOf(window.location.hostname) + window.location.hostname.length + 1 == window.location.href.length)
-{
+    {
 	console.warn("we are on website's main page, aren't we?");
 	return false;
-}
+    }
 let type = document.contentType.substring(0,document.contentType.indexOf("/"));
 if (type === "image" || type === "video")
 {
@@ -2899,9 +2900,11 @@ function makeworld()
 			i.src = i.href;
 			break;
 		}
-		break;
+	    break;
+        case "bdsmlust.com":
+            i = qdiv('#image-viewer > div#image-viewer-container > img');
 	default: // dynamic subdomain
-		switch(host.substr(host.indexOf(".")+1))
+	    switch(host.substr(host.indexOf(".")+1))
 		{
 		case "xhamster.com":
 		case "xhamster.desi":
