@@ -5,8 +5,8 @@
 // @contributor	ubless607, bitst0rm
 // @namespace	handyimage
 // @description	Shows just fullsize Image with hotkeys & without pop-ups on many image-hosting sites
-// @updateURL	https://github.com/BigW72/HandyImage/raw/master/HandyImage.user.js
-// @downloadURL	https://github.com/BigW72/HandyImage/raw/master/HandyImage.user.js
+// @updateURL	https://github.com/BigW72/HandyImage/raw/develop/HandyImage.user.js
+// @downloadURL	https://github.com/BigW72/HandyImage/raw/develop/HandyImage.user.js
 // @homepage	https://github.com/Owyn/HandyImage
 // @supportURL	https://github.com/Owyn/HandyImage/issues
 // @icon		https://i.ibb.co/znz0hry/W9zir-OUGo1.png
