@@ -909,7 +909,7 @@ if (
     window.location.href.lastIndexOf(window.location.hostname) +
         window.location.hostname.length +
         1 ==
-    window.location.href.length
+        window.location.href.length
 ) {
     console.warn("we are on website's main page, aren't we?")
     return false
@@ -924,8 +924,8 @@ if (type === 'image' || type === 'video') {
 if (history.length !== 1 && document.referrer) {
     if (
         document.referrer.lastIndexOf(window.location.hostname) != -1 &&
-        document.referrer.lastIndexOf(window.location.hostname) + 1 ==
-            document.referrer.length - window.location.hostname.length
+            document.referrer.lastIndexOf(window.location.hostname) + 1 ==
+                document.referrer.length - window.location.hostname.length
     ) {
         console.warn(
             'Handy Image: userscript stopped itself from running INTENTIONALLY: cuz your previous page is websites mainpage so you probably have just uploaded a picture yourself'
@@ -935,7 +935,7 @@ if (history.length !== 1 && document.referrer) {
 }
 if (
     document.title == 'Attention Required! | Cloudflare' ||
-    document.title == 'Just a moment...'
+        document.title == 'Just a moment...'
 ) {
     console.warn('Cloudflare MITM guard page.  Stopping.')
     return false
@@ -1102,10 +1102,10 @@ const AddElementToPage =
     typeof GM_addElement === 'function'
         ? GM_addElement
         : function (node, type, content) {
-              let el = protected_createElement(type)
-              el.textContent = content.textContent
-              node.appendChild(el)
-          } // stupid adGuard
+            let el = protected_createElement(type)
+            el.textContent = content.textContent
+            node.appendChild(el)
+        } // stupid adGuard
 
 function DeleteAllCookies() {
     document.cookie.split(';').forEach(function (c) {
@@ -1220,7 +1220,7 @@ function find_text_in_scripts(
     for (let c = 0; c < s.length; c++) {
         if (
             search_after_word &&
-            s[c].innerHTML.indexOf(search_after_word) != -1
+                s[c].innerHTML.indexOf(search_after_word) != -1
         ) {
             s[c].innerHTML = s[c].innerHTML.substring(
                 0,
@@ -1277,1810 +1277,1848 @@ function makeworld() {
     }
     // per-host image detection
     switch (host) {
-        case 'simplest-image-hosting.net':
-        case 'hostimage.ru':
-        case 'imgchili.net':
-        case 'adultimages.xyz':
-            i = q('img')
-            break
-        case 'myceleb.net':
-        case 'depic.me':
-        case 'dpic.me':
-            i = q('img#pic')
-            break
-        case 'imagebin.ca':
-            i = q('a img')
+    case 'simplest-image-hosting.net':
+    case 'hostimage.ru':
+    case 'imgchili.net':
+    case 'adultimages.xyz':
+        i = q('img')
+        break
+    case 'myceleb.net':
+    case 'depic.me':
+    case 'dpic.me':
+        i = q('img#pic')
+        break
+    case 'imagebin.ca':
+        i = q('a img')
+        if (i) {
+            i.src = i.parentNode.href
+        }
+        break
+    case 'i.redd.it':
+    case 'preview.redd.it':
+        i = q('faceplate-img, img')
+        if (i) {
+            i.src = i.getAttribute('src')
+        }
+        break
+    case 'savepic.org':
+    case 'savepic.ru':
+        i = q('a img:not([src*="/images/"])')
+        break
+    case 'motherless.com':
+        j = true
+        i = q('div#media-media div a img')
+        break
+    case 'awesomescreenshot.com':
+        i = q('img#screenshot')
+        break
+    case 'zupimages.net':
+        i = q('img#img_size')
+        break
+    case 'dropbox.com':
+        j = true
+        i = q('img.preview-image')
+        if (i) {
+            i.src = i.src.replace(/(size_mode)=\d+/, '$1=5')
+        }
+        break
+    case 'img.3ezy.net':
+    case 'image-bugs.com':
+    case 'imgclover.com':
+    case 'demo.chevereto.com':
+    case 'daily-img.com':
+    case 'celebimg.com':
+    case 'sfwimg.com':
+    case 'img3x.com':
+    case 'imgskull.xyz':
+    case 'imgskull.com':
+    case '2i.sk':
+    case '2i.cz':
+    case 'deffe.com':
+    case 'imagik.fr':
+    case 'gallerycloud.net':
+    case 'tryimg.com':
+    case 'fsfiles.org':
+    case 'picpicture.com':
+    case 'picpie.org':
+    case 'lostpic.net':
+    case 'batpic.com':
+        //chevereto 3.x
+        i = document.head.querySelector('link[rel="image_src"]')
+        if (i) {
+            i.src = i.href
+            i.src = i.src.replace('_800.', '.') //img.3ezy.net
+        }
+        break
+    case 'imagebam.com':
+        //j = true;
+        i = q('a i.fa-download')
+        if (i) {
+            i.src = i.parentNode.href
+        } else {
+            i = q('#continue a')
             if (i) {
-                i.src = i.parentNode.href
-            }
-            break
-        case 'i.redd.it':
-        case 'preview.redd.it':
-            i = q('faceplate-img, img')
-            if (i) {
-                i.src = i.getAttribute('src')
-            }
-            break
-        case 'savepic.org':
-        case 'savepic.ru':
-            i = q('a img:not([src*="/images/"])')
-            break
-        case 'motherless.com':
-            j = true
-            i = q('div#media-media div a img')
-            break
-        case 'awesomescreenshot.com':
-            i = q('img#screenshot')
-            break
-        case 'zupimages.net':
-            i = q('img#img_size')
-            break
-        case 'dropbox.com':
-            j = true
-            i = q('img.preview-image')
-            if (i) {
-                i.src = i.src.replace(/(size_mode)=\d+/, '$1=5')
-            }
-            break
-        case 'img.3ezy.net':
-        case 'image-bugs.com':
-        case 'imgclover.com':
-        case 'demo.chevereto.com':
-        case 'daily-img.com':
-        case 'celebimg.com':
-        case 'sfwimg.com':
-        case 'img3x.com':
-        case 'imgskull.xyz':
-        case 'imgskull.com':
-        case '2i.sk':
-        case '2i.cz':
-        case 'deffe.com':
-        case 'imagik.fr':
-        case 'gallerycloud.net':
-        case 'tryimg.com':
-        case 'fsfiles.org':
-        case 'picpicture.com':
-        case 'picpie.org':
-        case 'lostpic.net':
-        case 'batpic.com':
-            //chevereto 3.x
-            i = document.head.querySelector('link[rel="image_src"]')
-            if (i) {
-                i.src = i.href
-                i.src = i.src.replace('_800.', '.') //img.3ezy.net
-            }
-            break
-        case 'imagebam.com':
-            //j = true;
-            i = q('a i.fa-download')
-            if (i) {
-                i.src = i.parentNode.href
-            } else {
-                i = q('#continue a')
-                if (i) {
-                    let expires = ''
-                    let date = new Date()
-                    date.setTime(date.getTime() + 6 * 60 * 60 * 1000)
-                    expires = '; expires=' + date.toUTCString()
-                    document.cookie = 'nsfw_inter=1' + expires + '; path=/'
-                    i.click()
-                }
-            }
-            break
-        case 'directupload.net':
-        case 'bilderhoster.net':
-        case 'noelshack.com':
-        case 'kephost.com':
-        case 'i.ruspotting.net':
-        case 'gifyu.com':
-        case 'sharepic.org':
-        case 'zuly.de':
-        case 'upload.vstanced.com':
-        case 'thro.bz':
-        case 'qoou.net':
-        case 'brightpic.tk':
-        case 'cweb-pix.com':
-        case 'hosting.webspell.fr':
-        case 'i-pict.ru':
-        case 'images.woh.to':
-        case 'imghaze.com':
-        case 'imgup.nl':
-        case 'nium.co':
-        case 'pix.hostux.net':
-        case 'pixoload.de':
-        case 'primeimg.co':
-        case 'pic.xtream-reallife.de':
-        case 'ultraimg.com':
-        case 'safeimage.biz':
-        case 'imgextra.uk':
-        case 'ss.movierls.net':
-        case 'xxximagetpb.org':
-        case 'pix.ac':
-        case 'sparrowpics.com':
-        case 'prnt.sc':
-        case 'imgmax.com':
-        case 'extraimago.com':
-        case 'extraimage.net':
-        case 'imgcloud.pw':
-        case 'z4a.net':
-        case 'jiopic.com':
-        case 'wwv.imgcredit.xyz':
-        case 'moreimage.pw':
-        case 'lookimg.com':
-        case 'subefotos.com':
-        case 'imgcredit.xyz':
-        case 'rintor.space':
-        case 'imgbb.com':
-        case 'servimg.com':
-        case 'picmoney.org':
-        case 'skrinshoter.ru':
-        case 'imgmak.com':
-        case 'picklik.ru':
-        case 'jpg.church':
-        case 'imghub.ru':
-        case 'radikal.host':
-        case 'imgsh.net':
-        case 'jpg.fish':
-        case 'pixl.li':
-        case 'skr.sh':
-        case 'jpg.pet':
-        case 'jpeg.pet':
-        case 'im.ge':
-        case 'screencast.com':
-        case 'picshare.ru':
-        case 'jpg1.su':
-        case 'jpg2.su':
-        case 'jpg3.su':
-        case 'jpg4.su':
-        case 'img.trafficimage.club':
-        case 'pig69.com':
-        case 'javball.com':
-        case 'idol69.net':
-        case 'porn4f.com':
-        case 'ovabee.com':
-        case 'ai18.pics':
-        case 'paste.pics':
-        case 'cnxx.me':
-        case 'cnpics.org':
-        case 'cosplay18.pics':
-        case 'mjj.today':
-        case 'imgfoto.host':
-        case 'picabox.ru':
-        case 'snipboard.io':
-        case 'seaart.ai':
-        case 'freeimage.host':
-        case 'clip2net.com':
-            i = document.querySelector(
-                'meta[property="og:image"], [name="og:image"]'
-            )
-            if (i) {
-                i.src = i.content
-            } else {
-                i = q('a[download]')
-                if (i) {
-                    i.src = i.href
-                }
-            }
-            break
-        case 'vsco.co':
-            i = document.querySelector('meta[property="og:image"]')
-            if (i) {
-                i.src = i.content.substring(0, i.content.indexOf('?'))
-            }
-            break
-        case 'civitai.com':
-            j = true
-            i = document.querySelector(
-                'meta[property="og:image"], [name="og:image"]'
-            )
-            if (i) {
-                i.src = i.content.replace('width=1200', 'width=3840') // 4k
-            }
-            break
-        case 'tensor.art':
-            j = true
-            i = document.querySelector(
-                'meta[property="og:image"], [name="og:image"]'
-            )
-            if (i) {
-                i.src = i.content.replace('w=600', 'w=3840') // 4k (if available)
-            }
-            break
-        case 'mobile.twitter.com':
-        case 'twitter.com':
-        case 'mobile.x.com':
-        case 'x.com':
-            j = true
-            unsafeWindow.history.replaceState = unsafeWindow.console.log
-            i = q(
-                'a[href*="/photo/' +
-                    Number(window.location.href.at(-1)) +
-                    '"] img'
-            )
-            if (i) {
-                i.src =
-                    i.src.substring(0, i.src.indexOf('&name=')) + '&name=orig'
-                filename =
-                    'by ' +
-                    document.head.querySelector('meta[property="og:title"]')
-                        .content
-                filename_ext = i.src.substring(
-                    i.src.indexOf('format=') + 7,
-                    i.src.indexOf('&')
-                )
-            }
-            break
-        case 'm.imgur.com':
-            j = true
-            i = q('img.Image')
-            break
-        case 'imgur.com':
-            j = true
-            f = document.querySelectorAll(
-                '.image-placeholder,.post-image-placeholder,.image.post-image > img'
-            ) // for beta and non-beta
-            if (f.length) {
-                if (f.length != 1) {
-                    is_gallery = true
-                } else {
-                    i = f[0]
-                    let fi
-                    if ((fi = i.src.indexOf('_d.webp')) != -1) {
-                        i.src = i.src.substr(0, fi) + '.jpg' // png files will be named jpg too here
-                        console.log(
-                            'Handy Image: imgur replaced a LQ preview image with original one'
-                        )
-                    }
-                }
-            }
-            break
-        case 'ameblo.jp':
-            j = true
-            i = q('img#imgItem')
-            break
-        case 'instagram.com':
-            j = true
-            // find_text_in_scripts('"url":"', '"', false, '"image_versions2"')
-            if (q('header')) {
-                f = document.querySelectorAll(
-                    'div[role=button] > div > div img'
-                )
-                if (f.length === 1) {
-                    i = f[0]
-                } else {
-                    is_gallery = true
-                }
-            }
-            break
-        case 'flickr.com':
-        case 'secure.flickr.com':
-            find_text_in_scripts('"displayUrl":"', '"', false, '"o":')
-            break
-        case 'artstation.com':
-            j = true
-            f = document.querySelectorAll('a[href*="&dl="]')
-            if (f.length === 1) {
-                i = f[0]
-                i.src = i.href
-            }
-            break
-        case 'piczel.tv':
-            j = true
-            f = document.querySelector('a.GalleryImage_SingleTag')
-            if (f) {
-                i = q('a[href*="/gallery_image/"]')
-                if (i) {
-                    if (i.parentNode.previousSibling === null) {
-                        filename = f.parentNode.textContent.substring(1)
-                        i.src = i.href
-                    } else {
-                        is_gallery = true
-                    }
-                }
-            }
-            break
-        case 'pixiv.net':
-            j = true
-            i = document.head.querySelector('meta[name="preload-data"]')
-            if (i) {
-                let a = JSON.parse(i.getAttribute('content')).illust
-                let b = a[Object.keys(a)[0]]
-                if (b.pageCount !== 1) {
-                    console.warn(
-                        'Manga page with multiple images, no action taken further'
-                    )
-                    return
-                } else if (b.illustType == 2) {
-                    console.warn(
-                        'Animated ugoira image found, no action taken further'
-                    )
-                    return
-                }
-                i.src = b.urls.original
-                filename = b.title + ' by ' + b.userName
-                b.tags.tags.forEach(
-                    (el) => (filename = filename + ' ' + el.tag)
-                )
-            }
-            break
-        case 'idol.sankakucomplex.com':
-        case 'chan.sankakucomplex.com':
-            i = q('a[itemprop="contentUrl"]')
-            if (i) {
-                use_booru_tags_in_dl_filename()
-                i.src = i.href
-                referrer_policy = 'no-referrer'
-            }
-            break
-        case 'bcy.net':
-            f = document.querySelectorAll('img.detail_clickable')
-            if (f.length == 1) {
-                i = f[0]
-                i.src = f[0].src.replace('/w650', '')
-            }
-            break
-        case 'imageshack.com':
-            i = q('input[value*="' + iurl + '/f/"]')
-            if (i) {
-                window.location.href = i.value.replace('/f/', '/i/')
-            }
-            i = q('img[data-width]')
-            break
-        case '22pixx.xyz':
-        case 'trueimg.xyz':
-            f = window.location.href.match(
-                /[a-z]+-([a-z].+(?:\.jpe?g|png|gif|webp))/i
-            )
-            if (f) {
-                i = { src: window.location.origin + '/' + f[1] }
-            }
-            break
-        case 'h4z.it':
-            i = document.images[2]
-            if (i) {
-                i.src = i.parentNode.href
-            }
-            break
-        case 'thumbsnap.com':
-            i = q('img#thepic')
-            if (i && i.parentNode.href) {
-                i.src = i.src.replace('/s/', '/i/')
-            }
-            break
-        case 'imgbox.com':
-        case 'imageupper.com':
-        case 'hotflick.net':
-        case 'upix.me':
-            i = q('img#img')
-            if (!i && window.location.hash) {
-                // upix.me
-                i = q('a')
-                i.src = window.location.href.replace('#', '')
-            }
-            break
-        case 'imagesnake.com':
-        case 'imagesnake.org':
-        case 'freebunker.com':
-        case 'imagefruit.com':
-        case 'imagestime.com':
-        case 'imgcarry.com':
-        case 'pornbus.org':
-        case 'fotoo.pl':
-        case 'hostpix.de':
-        case 'uploadking.biz':
-        case 'foto.xhost.lv':
-        case 'onimage.net':
-        case 'storepic.com':
-        case 'hostarea.de':
-        case 'imgshots.com':
-            i = q('img#img_obj')
-            break
-        case 'abload.de':
-            i = document.body.querySelectorAll('img#image')
-            if (i) {
-                i = i[i.length - 1]
-            }
-            break
-        case 'imagecrest.com':
-        case 'imagepearl.com':
-        case 'imageup.ru':
-            i = q('#verify2')
-            if (i) {
-                let w = screen.width
-                let h = screen.height
-                let u = q('#i').value
-                let r = q('#r').value
-                let xhttp = new XMLHttpRequest()
-                xhttp.onreadystatechange = function () {
-                    if (xhttp.readyState == 4 && xhttp.status == 200) {
-                        location.reload()
-                    }
-                }
-                xhttp.open(
-                    'GET',
-                    'verify.php?w=' +
-                        w +
-                        '&h=' +
-                        h +
-                        '&i=' +
-                        u +
-                        '&r=' +
-                        r +
-                        '',
-                    false
-                )
-                xhttp.send()
-                break
-            }
-            i = q('img#image')
-            break
-        case 'fastpic.ru':
-        case 'fastpic.org':
-        case 'slowpic.xyz':
-            i = q('img[src*="/big/"]')
-            break
-        case 'bayimg.com':
-            i = q('img#mainImage')
-            break
-        case 'imageban.ru':
-        case 'imageban.net':
-            i = q('img[src*="' + iurl + '/out/"]')
-            break
-        case 'xup.in':
-            i = q('img[src*="/exec/"]')
-            break
-        case 'jpegbay.com':
-            i = q('a[class]')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'keep4u.ru':
-            i = q('img[src*="/b/"]')
-            break
-        case 'euro-pic.eu':
-        case 'picfox.org':
-        case 'freeimage.us':
-        case 'xxx.freeimage.us':
-        case 'pixsor.com':
-        case 'img.pereslavl.ru':
-        case 'rupict.ru':
-        case 'host99.byethost4.com':
-        case 'eazypics.net':
-        case 'xtupload.com':
-        case 't.williamgates.net':
-        case 'imgz.pw':
-        case 'imgurx.net':
-            //i = q('img#iimg');
-            if (!find_text_in_scripts("<img src='", "'")) {
-                i = q('a[download]') // imgz.pw
-                if (i) {
-                    i.src = i.href
-                }
-            }
-            break
-        case 'amateri.cz':
-            if (find_text_in_scripts('var orig_url="', '"')) {
-                i.src = i.src.replace(
-                    'http://www.amateri.cz/orig.php?&img=',
-                    'http://img2.amateri.cz/users/'
-                )
-            }
-            break
-        case 'imgtgd.shop':
-            j = true
-        case 'pixlev.store':
-        case 'pixmax.store':
-        case 'imgair.net':
-        case 'imgxqy.online':
-        case 'imgnmh.cfd':
-        case 'imgpukxxr.site':
-        case 'picngt.shop':
-            find_text_in_scripts('.src = "', '"')
-            break
-        case 'pix-x.net':
-        case 'picclock.ru':
-        case 'imgcach.ru':
-        case 'picpic.online':
-        case 'drlink.online':
-            i = q('img[onclick*="mshow"]')
-            if (i) {
-                i.src = i.src.replace('-thumb', '')
-                i.src = i.src.replace('img_thumb', 'img_full')
-            }
-            break
-        case 'pics-money.ru':
-            i = q('img[src*="/full/"]')
-            if (i) {
-                break
-            }
-        case 'pic5you.ru':
-        case 'pic4you.ru':
-        case 'picforall.ru':
-        case 'adult-images.ru':
-        case 'picage.ru':
-        case 'images-host.biz':
-        case 'pic-mir.ru':
-        case 'payforpic.ru':
-        case 'freshpics.ru':
-        case 'imgbase.online':
-        case 'picpays.ru':
-        case 'piccash.net':
-        case 'imgbase.ru':
-            i = q('img[src*="thumb"]')
-            if (i) {
-                i.src = i.src.replace('-thumb', '')
-                i.src = i.src.replace('img_thumb', 'img_full')
-                i.src = i.src.replace('_thumb', '')
-            }
-            break
-        case 'tinypic.com':
-            i = q('img#imgElement')
-            break
-        case 'picshot.pl':
-            i = q('img[src*="' + iurl + '/p"]')
-            if (i) {
-                i.src = i.src.replace('thumb', 'file')
-            }
-            break
-        case 'sharenxs.com':
-            i = q('img.view_photo')
-            if (i) {
-                i.src = i.src.replace('/thumbnails/', '/images/')
-                i.src = i.src.replace('/tn-', '/')
-                i.src = i.src.replace('/mid/', '/wz/')
-                f = q('div.alert.alert-info.nomargin.photo_name span')
-                if (f) {
-                    let url = i.src
-                    i.src =
-                        url.substring(0, url.lastIndexOf('/') + 1) +
-                        f.textContent +
-                        url.substring(url.lastIndexOf('.'))
-                }
-            }
-            break
-        case 'gettyimages.com':
-            j = true
-            find_text_in_scripts('"largeMainImageURL":"', '"') ||
-                find_text_in_scripts(
-                    '"filmCompUrl":"',
-                    '"',
-                    null,
-                    null,
-                    'video'
-                )
-            break
-        case 'radikal.ru':
-        case 'radical-foto.ru':
-        case 'radikal-foto.ru':
-        case 'f-page.ru':
-        case 'f-lite.ru':
-        case 'f-picture.net':
-            find_text_in_scripts('"Url":"', '"')
-            break
-        case 'jerking.empornium.ph':
-            find_text_in_scripts('	url: "', '"', true)
-            break
-        case 'bilder-space.de':
-        case 'imagesup.de':
-            i = q('img.picture')
-            break
-        case 'pix.toile-libre.org':
-        case 'photo-host.org':
-        case 'myxpic.com':
-        case 'picness.com':
-            i = q('a[href*="original"]')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'pimpandhost.com':
-            i = q('div.main-image-wrapper')
-            if (i) {
-                i.src = i.dataset.src
-            }
-            break
-        case 'postlmg.cc':
-            i = q('img#main-image')
-            break
-        case 'sexybabepics.net':
-        case 'keepimg.com':
-        case 'ibb.co':
-            i = document.head.querySelector('meta[property="og:image"]')
-            if (i) {
-                i.src = i.content
-                break
-            }
-        case 'pasteboard.co':
-            i = document.head.querySelector('meta[name="twitter:image"]')
-            if (i) {
-                i.src = i.content
-                break
-            }
-        case 'picsee.net':
-            i = q('a[href*="/upload"]')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'imagevenue.com':
-            i = q('img#main-image')
-            break
-        case 'slushe.com':
-            j = true
-            if (q('footer')) {
-                i = q('img.big-photo')
-            }
-            if (i) {
-                use_booru_tags_in_dl_filename()
-            }
-            break
-        case 'hentai-foundry.com':
-            j = true
-            i = q('.boxbody img')
-            if (i && i.onclick) {
+                let expires = ''
+                let date = new Date()
+                date.setTime(date.getTime() + 6 * 60 * 60 * 1000)
+                expires = '; expires=' + date.toUTCString()
+                document.cookie = 'nsfw_inter=1' + expires + '; path=/'
                 i.click()
             }
-            break
-        case 'realbooru.com':
-            i = q('img#image')
-            if (!i) {
-                i = q('video#gelcomVideoPlayer')
-                if (i && i.currentSrc) {
-                    i.src = i.currentSrc
-                }
-            }
-            if (i) {
-                use_booru_tags_in_dl_filename()
-            }
-            break
-        case 'rule34.xxx':
-        case 'rule34.us':
-            j = true
-            i = q('a[href*="/images/"][href*="' + host + '/"]')
-            if (i) {
-                use_booru_tags_in_dl_filename()
-                i.src = i.href
-            }
-            break
-        case 'rule34.paheal.net':
-            j = true
-            bUseCustomFilename = false
-            i = q('#main_image')
-            break
-        case 'rule34hentai.net':
-        case 'danbooru.donmai.us':
+        }
+        break
+    case 'directupload.net':
+    case 'bilderhoster.net':
+    case 'noelshack.com':
+    case 'kephost.com':
+    case 'i.ruspotting.net':
+    case 'gifyu.com':
+    case 'sharepic.org':
+    case 'zuly.de':
+    case 'upload.vstanced.com':
+    case 'thro.bz':
+    case 'qoou.net':
+    case 'brightpic.tk':
+    case 'cweb-pix.com':
+    case 'hosting.webspell.fr':
+    case 'i-pict.ru':
+    case 'images.woh.to':
+    case 'imghaze.com':
+    case 'imgup.nl':
+    case 'nium.co':
+    case 'pix.hostux.net':
+    case 'pixoload.de':
+    case 'primeimg.co':
+    case 'pic.xtream-reallife.de':
+    case 'ultraimg.com':
+    case 'safeimage.biz':
+    case 'imgextra.uk':
+    case 'ss.movierls.net':
+    case 'xxximagetpb.org':
+    case 'pix.ac':
+    case 'sparrowpics.com':
+    case 'prnt.sc':
+    case 'imgmax.com':
+    case 'extraimago.com':
+    case 'extraimage.net':
+    case 'imgcloud.pw':
+    case 'z4a.net':
+    case 'jiopic.com':
+    case 'wwv.imgcredit.xyz':
+    case 'moreimage.pw':
+    case 'lookimg.com':
+    case 'subefotos.com':
+    case 'imgcredit.xyz':
+    case 'rintor.space':
+    case 'imgbb.com':
+    case 'servimg.com':
+    case 'picmoney.org':
+    case 'skrinshoter.ru':
+    case 'imgmak.com':
+    case 'picklik.ru':
+    case 'jpg.church':
+    case 'imghub.ru':
+    case 'radikal.host':
+    case 'imgsh.net':
+    case 'jpg.fish':
+    case 'pixl.li':
+    case 'skr.sh':
+    case 'jpg.pet':
+    case 'jpeg.pet':
+    case 'im.ge':
+    case 'screencast.com':
+    case 'picshare.ru':
+    case 'jpg1.su':
+    case 'jpg2.su':
+    case 'jpg3.su':
+    case 'jpg4.su':
+    case 'img.trafficimage.club':
+    case 'pig69.com':
+    case 'javball.com':
+    case 'idol69.net':
+    case 'porn4f.com':
+    case 'ovabee.com':
+    case 'ai18.pics':
+    case 'paste.pics':
+    case 'cnxx.me':
+    case 'cnpics.org':
+    case 'cosplay18.pics':
+    case 'mjj.today':
+    case 'imgfoto.host':
+    case 'picabox.ru':
+    case 'snipboard.io':
+    case 'seaart.ai':
+    case 'freeimage.host':
+    case 'clip2net.com':
+        i = document.querySelector(
+            'meta[property="og:image"], [name="og:image"]'
+        )
+        if (i) {
+            i.src = i.content
+        } else {
             i = q('a[download]')
             if (i) {
-                use_booru_tags_in_dl_filename()
                 i.src = i.href
             }
-            break
-        case 'e621.net':
-            i = q('div#image-download-link a')
+        }
+        break
+    case 'vsco.co':
+        i = document.querySelector('meta[property="og:image"]')
+        if (i) {
+            i.src = i.content.substring(0, i.content.indexOf('?'))
+        }
+        break
+    case 'civitai.com':
+        j = true
+        i = document.querySelector(
+            'meta[property="og:image"], [name="og:image"]'
+        )
+        if (i) {
+            i.src = i.content.replace('width=1200', 'width=3840') // 4k
+        }
+        break
+    case 'tensor.art':
+        j = true
+        i = document.querySelector(
+            'meta[property="og:image"], [name="og:image"]'
+        )
+        if (i) {
+            i.src = i.content.replace('w=600', 'w=3840') // 4k (if available)
+        }
+        break
+    case 'mobile.twitter.com':
+    case 'twitter.com':
+    case 'mobile.x.com':
+    case 'x.com':
+        j = true
+        unsafeWindow.history.replaceState = unsafeWindow.console.log
+        i = q(
+            'a[href*="/photo/' +
+                Number(window.location.href.at(-1)) +
+                '"] img'
+        )
+        if (i) {
+            i.src =
+                    i.src.substring(0, i.src.indexOf('&name=')) + '&name=orig'
+            filename =
+                    'by ' +
+                        document.head.querySelector('meta[property="og:title"]')
+                            .content
+            filename_ext = i.src.substring(
+                i.src.indexOf('format=') + 7,
+                i.src.indexOf('&')
+            )
+        }
+        break
+    case 'm.imgur.com':
+        j = true
+        i = q('img.Image')
+        break
+    case 'imgur.com':
+        j = true
+        f = document.querySelectorAll(
+            '.image-placeholder,.post-image-placeholder,.image.post-image > img'
+        ) // for beta and non-beta
+        if (f.length) {
+            if (f.length != 1) {
+                is_gallery = true
+            } else {
+                i = f[0]
+                let fi
+                if ((fi = i.src.indexOf('_d.webp')) != -1) {
+                    i.src = i.src.substr(0, fi) + '.jpg' // png files will be named jpg too here
+                    console.log(
+                        'Handy Image: imgur replaced a LQ preview image with original one'
+                    )
+                }
+            }
+        }
+        break
+    case 'ameblo.jp':
+        j = true
+        i = q('img#imgItem')
+        break
+    case 'instagram.com':
+        j = true
+        // find_text_in_scripts('"url":"', '"', false, '"image_versions2"')
+        if (q('header')) {
+            f = document.querySelectorAll(
+                'div[role=button] > div > div img'
+            )
+            if (f.length === 1) {
+                i = f[0]
+            } else {
+                is_gallery = true
+            }
+        }
+        break
+    case 'flickr.com':
+    case 'secure.flickr.com':
+        find_text_in_scripts('"displayUrl":"', '"', false, '"o":')
+        break
+    case 'artstation.com':
+        j = true
+        f = document.querySelectorAll('a[href*="&dl="]')
+        if (f.length === 1) {
+            i = f[0]
+            i.src = i.href
+        }
+        break
+    case 'piczel.tv':
+        j = true
+        f = document.querySelector('a.GalleryImage_SingleTag')
+        if (f) {
+            i = q('a[href*="/gallery_image/"]')
             if (i) {
-                use_booru_tags_in_dl_filename()
-                i.src = i.href
-            }
-            break
-        case 'gelbooru.com':
-        case 'youhate.us':
-        case 'safebooru.org':
-            j = true
-            i = q('a[href*="/images/"][style]')
-            if (i) {
-                use_booru_tags_in_dl_filename()
-                i.src = i.href
-            }
-            break
-        case 'deviantart.com':
-            j = true
-            if (q('div[role="complementary"]')) {
-                // page loaded enough
-                i = q('a[download]')
-                if (
-                    i &&
-                    i.href.indexOf('deviantart.com/users/outgoing?') == -1
-                ) {
+                if (i.parentNode.previousSibling === null) {
+                    filename = f.parentNode.textContent.substring(1)
                     i.src = i.href
-                    console.log('found download link')
                 } else {
-                    if (
-                        parseInt(
-                            window.location.pathname.substring(
-                                window.location.pathname.lastIndexOf('-') + 1
-                            )
-                        ) <= 790677560
-                    ) {
-                        // max resolution hax (available only for old images - sadly)
-                        i = document.head.querySelector(
-                            'link[rel="preload"][as="image"]'
+                    is_gallery = true
+                }
+            }
+        }
+        break
+    case 'pixiv.net':
+        j = true
+        i = document.head.querySelector('meta[name="preload-data"]')
+        if (i) {
+            let a = JSON.parse(i.getAttribute('content')).illust
+            let b = a[Object.keys(a)[0]]
+            if (b.pageCount !== 1) {
+                console.warn(
+                    'Manga page with multiple images, no action taken further'
+                )
+                return
+            } else if (b.illustType == 2) {
+                console.warn(
+                    'Animated ugoira image found, no action taken further'
+                )
+                return
+            }
+            i.src = b.urls.original
+            filename = b.title + ' by ' + b.userName
+            b.tags.tags.forEach(
+                (el) => (filename = filename + ' ' + el.tag)
+            )
+        }
+        break
+    case 'idol.sankakucomplex.com':
+    case 'chan.sankakucomplex.com':
+        i = q('a[itemprop="contentUrl"]')
+        if (i) {
+            use_booru_tags_in_dl_filename()
+            i.src = i.href
+            referrer_policy = 'no-referrer'
+        }
+        break
+    case 'bcy.net':
+        f = document.querySelectorAll('img.detail_clickable')
+        if (f.length == 1) {
+            i = f[0]
+            i.src = f[0].src.replace('/w650', '')
+        }
+        break
+    case 'imageshack.com':
+        i = q('input[value*="' + iurl + '/f/"]')
+        if (i) {
+            window.location.href = i.value.replace('/f/', '/i/')
+        }
+        i = q('img[data-width]')
+        break
+    case '22pixx.xyz':
+    case 'trueimg.xyz':
+        f = window.location.href.match(
+            /[a-z]+-([a-z].+(?:\.jpe?g|png|gif|webp))/i
+        )
+        if (f) {
+            i = { src: window.location.origin + '/' + f[1] }
+        }
+        break
+    case 'h4z.it':
+        i = document.images[2]
+        if (i) {
+            i.src = i.parentNode.href
+        }
+        break
+    case 'thumbsnap.com':
+        i = q('img#thepic')
+        if (i && i.parentNode.href) {
+            i.src = i.src.replace('/s/', '/i/')
+        }
+        break
+    case 'imgbox.com':
+    case 'imageupper.com':
+    case 'hotflick.net':
+    case 'upix.me':
+        i = q('img#img')
+        if (!i && window.location.hash) {
+            // upix.me
+            i = q('a')
+            i.src = window.location.href.replace('#', '')
+        }
+        break
+    case 'imagesnake.com':
+    case 'imagesnake.org':
+    case 'freebunker.com':
+    case 'imagefruit.com':
+    case 'imagestime.com':
+    case 'imgcarry.com':
+    case 'pornbus.org':
+    case 'fotoo.pl':
+    case 'hostpix.de':
+    case 'uploadking.biz':
+    case 'foto.xhost.lv':
+    case 'onimage.net':
+    case 'storepic.com':
+    case 'hostarea.de':
+    case 'imgshots.com':
+        i = q('img#img_obj')
+        break
+    case 'abload.de':
+        i = document.body.querySelectorAll('img#image')
+        if (i) {
+            i = i[i.length - 1]
+        }
+        break
+    case 'imagecrest.com':
+    case 'imagepearl.com':
+    case 'imageup.ru':
+        i = q('#verify2')
+        if (i) {
+            let w = screen.width
+            let h = screen.height
+            let u = q('#i').value
+            let r = q('#r').value
+            let xhttp = new XMLHttpRequest()
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    location.reload()
+                }
+            }
+            xhttp.open(
+                'GET',
+                'verify.php?w=' +
+                    w +
+                    '&h=' +
+                    h +
+                    '&i=' +
+                    u +
+                    '&r=' +
+                    r +
+                    '',
+                false
+            )
+            xhttp.send()
+            break
+        }
+        i = q('img#image')
+        break
+    case 'fastpic.ru':
+    case 'fastpic.org':
+    case 'slowpic.xyz':
+        i = q('img[src*="/big/"]')
+        break
+    case 'bayimg.com':
+        i = q('img#mainImage')
+        break
+    case 'imageban.ru':
+    case 'imageban.net':
+        i = q('img[src*="' + iurl + '/out/"]')
+        break
+    case 'xup.in':
+        i = q('img[src*="/exec/"]')
+        break
+    case 'jpegbay.com':
+        i = q('a[class]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'keep4u.ru':
+        i = q('img[src*="/b/"]')
+        break
+    case 'euro-pic.eu':
+    case 'picfox.org':
+    case 'freeimage.us':
+    case 'xxx.freeimage.us':
+    case 'pixsor.com':
+    case 'img.pereslavl.ru':
+    case 'rupict.ru':
+    case 'host99.byethost4.com':
+    case 'eazypics.net':
+    case 'xtupload.com':
+    case 't.williamgates.net':
+    case 'imgz.pw':
+    case 'imgurx.net':
+        //i = q('img#iimg');
+        if (!find_text_in_scripts("<img src='", "'")) {
+            i = q('a[download]') // imgz.pw
+            if (i) {
+                i.src = i.href
+            }
+        }
+        break
+    case 'amateri.cz':
+        if (find_text_in_scripts('var orig_url="', '"')) {
+            i.src = i.src.replace(
+                'http://www.amateri.cz/orig.php?&img=',
+                'http://img2.amateri.cz/users/'
+            )
+        }
+        break
+    case 'imgtgd.shop':
+        j = true
+    case 'pixlev.store':
+    case 'pixmax.store':
+    case 'imgair.net':
+    case 'imgxqy.online':
+    case 'imgnmh.cfd':
+    case 'imgpukxxr.site':
+    case 'picngt.shop':
+        find_text_in_scripts('.src = "', '"')
+        break
+    case 'pix-x.net':
+    case 'picclock.ru':
+    case 'imgcach.ru':
+    case 'picpic.online':
+    case 'drlink.online':
+        i = q('img[onclick*="mshow"]')
+        if (i) {
+            i.src = i.src.replace('-thumb', '')
+            i.src = i.src.replace('img_thumb', 'img_full')
+        }
+        break
+    case 'pics-money.ru':
+        i = q('img[src*="/full/"]')
+        if (i) {
+            break
+        }
+    case 'pic5you.ru':
+    case 'pic4you.ru':
+    case 'picforall.ru':
+    case 'adult-images.ru':
+    case 'picage.ru':
+    case 'images-host.biz':
+    case 'pic-mir.ru':
+    case 'payforpic.ru':
+    case 'freshpics.ru':
+    case 'imgbase.online':
+    case 'picpays.ru':
+    case 'piccash.net':
+    case 'imgbase.ru':
+        i = q('img[src*="thumb"]')
+        if (i) {
+            i.src = i.src.replace('-thumb', '')
+            i.src = i.src.replace('img_thumb', 'img_full')
+            i.src = i.src.replace('_thumb', '')
+        }
+        break
+    case 'tinypic.com':
+        i = q('img#imgElement')
+        break
+    case 'picshot.pl':
+        i = q('img[src*="' + iurl + '/p"]')
+        if (i) {
+            i.src = i.src.replace('thumb', 'file')
+        }
+        break
+    case 'sharenxs.com':
+        i = q('img.view_photo')
+        if (i) {
+            i.src = i.src.replace('/thumbnails/', '/images/')
+            i.src = i.src.replace('/tn-', '/')
+            i.src = i.src.replace('/mid/', '/wz/')
+            f = q('div.alert.alert-info.nomargin.photo_name span')
+            if (f) {
+                let url = i.src
+                i.src =
+                        url.substring(0, url.lastIndexOf('/') + 1) +
+                            f.textContent +
+                            url.substring(url.lastIndexOf('.'))
+            }
+        }
+        break
+    case 'gettyimages.com':
+        j = true
+        find_text_in_scripts('"largeMainImageURL":"', '"') ||
+            find_text_in_scripts(
+                '"filmCompUrl":"',
+                '"',
+                null,
+                null,
+                'video'
+            )
+        break
+    case 'radikal.ru':
+    case 'radical-foto.ru':
+    case 'radikal-foto.ru':
+    case 'f-page.ru':
+    case 'f-lite.ru':
+    case 'f-picture.net':
+        find_text_in_scripts('"Url":"', '"')
+        break
+    case 'jerking.empornium.ph':
+        find_text_in_scripts('	url: "', '"', true)
+        break
+    case 'bilder-space.de':
+    case 'imagesup.de':
+        i = q('img.picture')
+        break
+    case 'pix.toile-libre.org':
+    case 'photo-host.org':
+    case 'myxpic.com':
+    case 'picness.com':
+        i = q('a[href*="original"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'pimpandhost.com':
+        i = q('div.main-image-wrapper')
+        if (i) {
+            i.src = i.dataset.src
+        }
+        break
+    case 'postlmg.cc':
+        i = q('img#main-image')
+        break
+    case 'sexybabepics.net':
+    case 'keepimg.com':
+    case 'ibb.co':
+        i = document.head.querySelector('meta[property="og:image"]')
+        if (i) {
+            i.src = i.content
+            break
+        }
+    case 'pasteboard.co':
+        i = document.head.querySelector('meta[name="twitter:image"]')
+        if (i) {
+            i.src = i.content
+            break
+        }
+    case 'picsee.net':
+        i = q('a[href*="/upload"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'imagevenue.com':
+        i = q('img#main-image')
+        break
+    case 'slushe.com':
+        j = true
+        if (q('footer')) {
+            i = q('img.big-photo')
+        }
+        if (i) {
+            use_booru_tags_in_dl_filename()
+        }
+        break
+    case 'hentai-foundry.com':
+        j = true
+        i = q('.boxbody img')
+        if (i && i.onclick) {
+            i.click()
+        }
+        break
+    case 'realbooru.com':
+        i = q('img#image')
+        if (!i) {
+            i = q('video#gelcomVideoPlayer')
+            if (i && i.currentSrc) {
+                i.src = i.currentSrc
+            }
+        }
+        if (i) {
+            use_booru_tags_in_dl_filename()
+        }
+        break
+    case 'rule34.xxx':
+    case 'rule34.us':
+        j = true
+        i = q('a[href*="/images/"][href*="' + host + '/"]')
+        if (i) {
+            use_booru_tags_in_dl_filename()
+            i.src = i.href
+        }
+        break
+    case 'rule34.paheal.net':
+        j = true
+        bUseCustomFilename = false
+        i = q('#main_image')
+        break
+    case 'rule34hentai.net':
+    case 'danbooru.donmai.us':
+        i = q('a[download]')
+        if (i) {
+            use_booru_tags_in_dl_filename()
+            i.src = i.href
+        }
+        break
+    case 'e621.net':
+        i = q('div#image-download-link a')
+        if (i) {
+            use_booru_tags_in_dl_filename()
+            i.src = i.href
+        }
+        break
+    case 'gelbooru.com':
+    case 'youhate.us':
+    case 'safebooru.org':
+        j = true
+        i = q('a[href*="/images/"][style]')
+        if (i) {
+            use_booru_tags_in_dl_filename()
+            i.src = i.href
+        }
+        break
+    case 'deviantart.com':
+        j = true
+        if (q('div[role="complementary"]')) {
+            // page loaded enough
+            i = q('a[download]')
+            if (
+                i &&
+                    i.href.indexOf('deviantart.com/users/outgoing?') == -1
+            ) {
+                i.src = i.href
+                console.log('found download link')
+            } else {
+                if (
+                    parseInt(
+                        window.location.pathname.substring(
+                            window.location.pathname.lastIndexOf('-') + 1
                         )
+                    ) <= 790677560
+                ) {
+                    // max resolution hax (available only for old images - sadly)
+                    i = document.head.querySelector(
+                        'link[rel="preload"][as="image"]'
+                    )
+                    if (i) {
+                        i = q('img[src="' + i.href + '"]') // need to check its cursor now
                         if (i) {
-                            i = q('img[src="' + i.href + '"]') // need to check its cursor now
-                            if (i) {
-                                if (getComputedStyle(i).cursor === 'zoom-in') {
-                                    f = i.src.search(/\/f\/[^\/]+\/[^\/]+/) // no idea what this code was for
-                                    if (f !== -1) {
-                                        i.src = i.src.substring(
-                                            0,
-                                            f +
-                                                i.src.match(
-                                                    /\/f\/[^\/]+\/[^\/]+/
-                                                )[0].length
-                                        )
-                                    }
-                                    //
-                                    i.src = i.src.replace(
-                                        '/f/',
-                                        '/intermediary/f/'
-                                    )
-                                    console.log(
-                                        'hacked image resolution to maximum'
-                                    )
-                                } else {
-                                    console.log(
-                                        'found very old and small image - no higher resolution to look for'
+                            if (getComputedStyle(i).cursor === 'zoom-in') {
+                                f = i.src.search(/\/f\/[^\/]+\/[^\/]+/) // no idea what this code was for
+                                if (f !== -1) {
+                                    i.src = i.src.substring(
+                                        0,
+                                        f +
+                                            i.src.match(
+                                                /\/f\/[^\/]+\/[^\/]+/
+                                            )[0].length
                                     )
                                 }
-                            }
-                        }
-                    } else {
-                        i = q('div[role="dialog"] div img') // zoomed in
-                        if (i) {
-                            console.log('found zoomed-in image')
-                            f = i.src.match(/,q_\d\d,/)
-                            if (f !== null) {
-                                i.src = i.src.replace(f[0], ',q_100,') // max quality hax
-                                console.log(
-                                    'hacked image quality to maximum (but not resolution)'
+                                //
+                                i.src = i.src.replace(
+                                    '/f/',
+                                    '/intermediary/f/'
                                 )
-                            }
-                            break
-                        }
-                        i = q('div[data-hook="art_stage"] div div div img') // not zoomed in yet
-                        if (i) {
-                            console.log('found un-zoomed image, clicked it')
-                            i.click()
-                            i = null
-                            break
-                        }
-                    }
-                }
-                if (i) {
-                    filename = document.title.replace(' on DeviantArt', '')
-                }
-            }
-            break
-        case 'furaffinity.net':
-            j = true
-            i = q('div.download a')
-            if (i) {
-                i.src = i.href
-                filename = document.title
-            }
-            break
-        case 'imagehost.eu':
-            i = q('a#image')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'imgplus.info':
-            i = q('img[src*="full"]')
-            break
-        case 'zerochan.net':
-            i = q('a[href*="full"]')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'wstaw.org':
-            i = q('a[href*="/m/"]')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'imageshost.ru':
-        case 'lostpix.com':
-            i = q('a[href*="/img/"]')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'uploadimage.ro':
-            i = q('img[src*="img.php"]')
-            break
-        case 'imageno.com':
-            i = q('img[src*="image.php"]')
-            break
-        case 'loadpix.de':
-            i = q('img[src*="bild.php"]')
-            break
-        case 'bildr.no':
-            i = q('img[src*="image"]')
-            break
-        case 'iv.pl':
-        case 'funextra.hostzi.com':
-        case 'freakimage.com':
-        case 'imageurlhost.com':
-        case 'superkipje.com':
-        case 'ximg.co.uk':
-        case 'sl-images.ath.cx':
-        case 'hosting-zdjec.pl':
-        case 'upislam.com':
-        case 'add-screen.com':
-        case 'my-collection.ru':
-        case 'img.schattorie.nl':
-        case 'forexrainbow.com':
-        case 'imgupload.pl':
-        case 'addpix.net':
-        case 'myuploadedimages.com':
-        case 'multihoster.saxonia-fighter.de':
-        case 'imgdone.com':
-        case 'greenpiccs.com':
-        case 'balkanelite.org':
-        case 'qrrro.com':
-        case 'vipix.pw':
-        case 'imagecurl.com':
-        case 'imagecurl.org':
-        case 'imagescanner.cc':
-            i = q('a[href*="images/"]')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'fotoshack.us':
-            i = q('img[src*="/fotos/"]')
-            break
-        case 'subefotos.com':
-            j = true
-            i = q('img[src*="fotos.' + iurl + '"]')
-            break
-        case 'pictureshoster.com':
-        case 'zaslike.com':
-        case 'dwimg.com':
-        case 'uploadagent.de':
-            i = q('a[href*="files/"]')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'photosex.biz':
-            i = q('img[src*="/pic"]')
-            break
-        case 'pronpic.org':
-            i = q('img#small_img[src*="/pic/"]')
-            if (i) {
-                i.src = i.src.replace('th_', '')
-            }
-            break
-        case 'imadul.com':
-            i = q('div.img_box a')
-            if (i) {
-                i.src = i.href
-            }
-            break
-        case 'imgmega.com':
-        case 'pic.re':
-        case 'picbaron.com':
-        case 'imgbaron.com':
-        case 'kvador.com':
-        case 'pics4you.net':
-            i = q('input[type="submit"]')
-            dp = true
-            if (i) {
-                i.click()
-                break
-            }
-        case 'screenlist.ru':
-        case 'picshare.geenza.com':
-        case 'mojoimage.com':
-        case 'imagecherry.com':
-        case '10.imageleon.com':
-        case 'img4.imagetitan.com':
-        case 'ninjaimages.com':
-        case '3xplanet.com':
-        case '3xplanet.net':
-            i = q('img[onload*="scale"]')
-            break
-        case 'bild.me':
-        case 'imagecarry.com':
-        case 'imagedunk.com':
-        case 'imageswitch.com':
-        case 'piclambo.net':
-        case 'picleet.com':
-        case 'yankoimages.net':
-        case 'picturedip.com':
-        case 'imagezilla.net':
-        case 'hotchyx.com':
-        case 'imagehousing.com':
-        case 'cubeupload.com':
-        case 'dumparump.com':
-        case 'uploads.ru':
-        case 'myimg.de':
-        case 'root-space.eu':
-        case 'mepic.ru':
-        case 'postto.me':
-            i = q('img[src*="' + iurl + '"]')
-            break
-        case 'ask.fm':
-            i = q('img[src*="' + iurl + '"][id]')
-            i.src = i.src.replace('/original/', '/large/') //ask.fm
-            break
-        case 'photo.weibo.com':
-            i = q('img[src*="/large/"]')
-            break
-        case 'picfront.org':
-            j = true
-            i = q('img[src*="' + iurl + '"][title]')
-            break
-        case 'platimzafoto.ru':
-        case 'pic-money.ru':
-        case 'imgmoney.ru':
-        case 'img24.org':
-        case 'svetmonet.ru':
-        case 'pic4share.ru':
-        case 'pic-images.ru':
-        case 'imgspic.ru':
-        case 'picpower.ru':
-        case 'piccloud.ru':
-        case 'pixxsees.ru':
-        case '2picsun.ru':
-        case 'img-pika.ru':
-        case 'wwxxww.ru':
-        case 'pic3you.org':
-        case 'shaggyimg.pro':
-        case 'imgsmarts.info':
-        case 'dailyimages.xyz':
-        case 'imgazure.com':
-            f = document.getElementsByTagName('button')
-            if (f.length) {
-                f[f.length - 1].click()
-            }
-            dp = true
-            i = q('img[src*="/pic.jpeg"]')
-            break
-        case 'imagerar.com':
-            if (window.location.href.indexOf('img-') != -1) {
-                window.location.href = window.location.href.replace(
-                    'img-',
-                    'img2-'
-                )
-                break
-            }
-        case 'imgprime.com':
-            if (window.location.href.indexOf('img-') != -1) {
-                window.location.href = window.location.href.replace(
-                    'img-',
-                    'img3-'
-                )
-                break
-            } else if (window.location.href.indexOf('/imga-u/') != -1) {
-                window.location.href = window.location.href.replace(
-                    '/imga-u/',
-                    '/imgb-u/'
-                )
-                break
-            } else if (window.location.href.indexOf('/imgb-u/') != -1) {
-                i = q('img[src*="/u/b/"]')
-                break
-            }
-        case 'freeimagehosting.net':
-        case 'uploadhouse.com':
-        case 'fotos-hochladen.net':
-        case 'imgtab.net':
-            i = q('img[src*="uploads/"]')
-            break
-        case 'xtremeshack.com':
-            i = q('img[src*="/photos/"]')
-            break
-        case '500px.com':
-            j = true
-            i = q('#copyrightTooltipContainer img')
-            if (i) {
-                var m = i.src.match('/photo/(\\d+)/')
-                if (m) {
-                    var xhttp = new XMLHttpRequest()
-                    xhttp.open(
-                        'GET',
-                        'https://api.500px.com/v1/photos?ids=' +
-                            m[1] +
-                            '&image_size=4096'
-                    )
-                    xhttp.onload = function () {
-                        if (xhttp.status == 200) {
-                            try {
-                                i.src = JSON.parse(xhttp.response)['photos'][
-                                    m[1]
-                                ]['images'][0]['url']
                                 console.log(
                                     'hacked image resolution to maximum'
                                 )
-                            } catch (e) {
-                                console.warn(e)
+                            } else {
+                                console.log(
+                                    'found very old and small image - no higher resolution to look for'
+                                )
                             }
                         }
                     }
-                    xhttp.send()
-                }
-            }
-            break
-        case 'picturepush.com':
-            i = q('img[src*="/photo/"]')
-            break
-        case 'keptarolo.hu':
-            i = q('img[src*="/kep/"]')
-            break
-        case 'truepic.org':
-            i = q('img[src*="/u/"]')
-            break
-        case 'imagearn.com':
-            i = q('img[src*="/imags/"]')
-            break
-        case 'ichan.org':
-            i = q('img[src*="/src/"]')
-            break
-        case 'ibunker.us':
-        case 'hostingpics.net':
-            i = q('img[src*="pics/"]')
-            break
-        case 'dewimg.com':
-        case 'subirimagenes.com':
-        case 'tezzpic.com':
-            j = true
-            dp = true
-            f = document.querySelectorAll("input[type='submit']")
-            if (f.length) {
-                let n
-                for (n = f.length - 1; n >= 0; n--) {
-                    if (
-                        window.getComputedStyle(f[n]).visibility != 'hidden' &&
-                        f[n].offsetWidth != 0 &&
-                        f[n].value.indexOf('eply') == -1 &&
-                        f[n].value.indexOf('Log') == -1
-                    ) {
-                        f[n].removeAttribute('disabled')
-                        f[n].click()
-                        i = 1
-                        return
+                } else {
+                    i = q('div[role="dialog"] div img') // zoomed in
+                    if (i) {
+                        console.log('found zoomed-in image')
+                        f = i.src.match(/,q_\d\d,/)
+                        if (f !== null) {
+                            i.src = i.src.replace(f[0], ',q_100,') // max quality hax
+                            console.log(
+                                'hacked image quality to maximum (but not resolution)'
+                            )
+                        }
+                        break
                     }
-                }
-            }
-            i = q('img[onload*="scale"]')
-            break
-        case 'crownimg.com':
-            i = q('button')
-            dp = true
-            j = true
-            if (i) {
-                i.click()
-                break
-            }
-        case 'myimg.club':
-        case 'imgmonkey.com':
-        case 'imgdragon.com':
-        case 'imggold.org':
-        case 'levinpic.org':
-        case 'imgtown.net':
-        case 'pixs.cx':
-        case 'kropic.com':
-        case 'outletpic.com':
-        case 'pictwn.com':
-        case 'meetimgz.com':
-            j = true
-            dp = true
-            f = document.querySelectorAll("input[type='submit']")
-            if (f.length) {
-                let n
-                for (n = f.length - 1; n >= 0; n--) {
-                    if (
-                        window.getComputedStyle(f[n]).visibility != 'hidden' &&
-                        f[n].offsetWidth != 0 &&
-                        f[n].value.indexOf('eply') == -1 &&
-                        f[n].value.indexOf('Log') == -1
-                    ) {
-                        //f[n].removeAttribute("disabled"); ok, let's wait
-                        f[n].click()
+                    i = q('div[data-hook="art_stage"] div div div img') // not zoomed in yet
+                    if (i) {
+                        console.log('found un-zoomed image, clicked it')
+                        i.click()
+                        i = null
                         break
                     }
                 }
             }
-        case 'casimages.com':
-        case 'thebestpichost.com':
-        case 'ifotos.pl':
-        case 'subeimagenes.com':
-        case 'vvcap.com':
-        case 'imgtrex.com':
-        case 'pic-upload.de':
-        case 'picusha.net':
-            i = q('img[src*="/img/"]')
-            break
-        case 'imagenetz.de':
-            i = q('img[src*="/img"]')
-            break
-        case 'picatom.com':
-            i = q('img[src*="img/"]')
-            break
-        case 'imgking.xyz':
-        case 'imgazure.com':
-            i = q('img[src*="/img/"]')
             if (i) {
-                i.src = i.src.replace('p.', '.')
+                filename = document.title.replace(' on DeviantArt', '')
             }
+        }
+        break
+    case 'furaffinity.net':
+        j = true
+        i = q('div.download a')
+        if (i) {
+            i.src = i.href
+            filename = document.title
+        }
+        break
+    case 'imagehost.eu':
+        i = q('a#image')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'imgplus.info':
+        i = q('img[src*="full"]')
+        break
+    case 'zerochan.net':
+        i = q('a[href*="full"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'wstaw.org':
+        i = q('a[href*="/m/"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'imageshost.ru':
+    case 'lostpix.com':
+        i = q('a[href*="/img/"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'uploadimage.ro':
+        i = q('img[src*="img.php"]')
+        break
+    case 'imageno.com':
+        i = q('img[src*="image.php"]')
+        break
+    case 'loadpix.de':
+        i = q('img[src*="bild.php"]')
+        break
+    case 'bildr.no':
+        i = q('img[src*="image"]')
+        break
+    case 'iv.pl':
+    case 'funextra.hostzi.com':
+    case 'freakimage.com':
+    case 'imageurlhost.com':
+    case 'superkipje.com':
+    case 'ximg.co.uk':
+    case 'sl-images.ath.cx':
+    case 'hosting-zdjec.pl':
+    case 'upislam.com':
+    case 'add-screen.com':
+    case 'my-collection.ru':
+    case 'img.schattorie.nl':
+    case 'forexrainbow.com':
+    case 'imgupload.pl':
+    case 'addpix.net':
+    case 'myuploadedimages.com':
+    case 'multihoster.saxonia-fighter.de':
+    case 'imgdone.com':
+    case 'greenpiccs.com':
+    case 'balkanelite.org':
+    case 'qrrro.com':
+    case 'vipix.pw':
+    case 'imagecurl.com':
+    case 'imagecurl.org':
+    case 'imagescanner.cc':
+        i = q('a[href*="images/"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'fotoshack.us':
+        i = q('img[src*="/fotos/"]')
+        break
+    case 'subefotos.com':
+        j = true
+        i = q('img[src*="fotos.' + iurl + '"]')
+        break
+    case 'pictureshoster.com':
+    case 'zaslike.com':
+    case 'dwimg.com':
+    case 'uploadagent.de':
+        i = q('a[href*="files/"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'photosex.biz':
+        i = q('img[src*="/pic"]')
+        break
+    case 'pronpic.org':
+        i = q('img#small_img[src*="/pic/"]')
+        if (i) {
+            i.src = i.src.replace('th_', '')
+        }
+        break
+    case 'imadul.com':
+        i = q('div.img_box a')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'imgmega.com':
+    case 'pic.re':
+    case 'picbaron.com':
+    case 'imgbaron.com':
+    case 'kvador.com':
+    case 'pics4you.net':
+        i = q('input[type="submit"]')
+        dp = true
+        if (i) {
+            i.click()
             break
-        case 'imgbabes.com':
-        case 'imgflare.com':
-            i = q('input[type="submit"]')
-            dp = true
-            j = true
-            if (i) {
-                i.click()
-                i = null
-            } else {
-                i = q('img[src*="i.php?"]')
-            }
+        }
+    case 'screenlist.ru':
+    case 'picshare.geenza.com':
+    case 'mojoimage.com':
+    case 'imagecherry.com':
+    case '10.imageleon.com':
+    case 'img4.imagetitan.com':
+    case 'ninjaimages.com':
+    case '3xplanet.com':
+    case '3xplanet.net':
+        i = q('img[onload*="scale"]')
+        break
+    case 'bild.me':
+    case 'imagecarry.com':
+    case 'imagedunk.com':
+    case 'imageswitch.com':
+    case 'piclambo.net':
+    case 'picleet.com':
+    case 'yankoimages.net':
+    case 'picturedip.com':
+    case 'imagezilla.net':
+    case 'hotchyx.com':
+    case 'imagehousing.com':
+    case 'cubeupload.com':
+    case 'dumparump.com':
+    case 'uploads.ru':
+    case 'myimg.de':
+    case 'root-space.eu':
+    case 'mepic.ru':
+    case 'postto.me':
+        i = q('img[src*="' + iurl + '"]')
+        break
+    case 'ask.fm':
+        i = q('img[src*="' + iurl + '"][id]')
+        i.src = i.src.replace('/original/', '/large/') //ask.fm
+        break
+    case 'photo.weibo.com':
+        i = q('img[src*="/large/"]')
+        break
+    case 'picfront.org':
+        j = true
+        i = q('img[src*="' + iurl + '"][title]')
+        break
+    case 'platimzafoto.ru':
+    case 'pic-money.ru':
+    case 'imgmoney.ru':
+    case 'img24.org':
+    case 'svetmonet.ru':
+    case 'pic4share.ru':
+    case 'pic-images.ru':
+    case 'imgspic.ru':
+    case 'picpower.ru':
+    case 'piccloud.ru':
+    case 'pixxsees.ru':
+    case '2picsun.ru':
+    case 'img-pika.ru':
+    case 'wwxxww.ru':
+    case 'pic3you.org':
+    case 'shaggyimg.pro':
+    case 'imgsmarts.info':
+    case 'dailyimages.xyz':
+    case 'imgazure.com':
+        f = document.getElementsByTagName('button')
+        if (f.length) {
+            f[f.length - 1].click()
+        }
+        dp = true
+        i = q('img[src*="/pic.jpeg"]')
+        break
+    case 'imagerar.com':
+        if (window.location.href.indexOf('img-') != -1) {
+            window.location.href = window.location.href.replace(
+                'img-',
+                'img2-'
+            )
             break
-        case 'xxxhost.me':
-        case 'bilder-hochladen.net':
-        case 'dumpt.com':
-        case 'imgsin.com':
-        case 'loaditup.de':
-        case '123poze.3x.ro':
-        case 'thaisharing.online.fr':
-        case 'filefap.com':
-        case 'imgswift.com':
-        case '1pic.org':
-            i = q('img[src*="/files/"]')
+        }
+    case 'imgprime.com':
+        if (window.location.href.indexOf('img-') != -1) {
+            window.location.href = window.location.href.replace(
+                'img-',
+                'img3-'
+            )
             break
-        case 'image18.org':
-            i = q('img[src*="/file"]')
+        } else if (window.location.href.indexOf('/imga-u/') != -1) {
+            window.location.href = window.location.href.replace(
+                '/imga-u/',
+                '/imgb-u/'
+            )
             break
-        case 'picstate.com':
-            i = q('#image_container a img')
+        } else if (window.location.href.indexOf('/imgb-u/') != -1) {
+            i = q('img[src*="/u/b/"]')
             break
-        case 'zimagez.com':
-            i = q('img[src*="/full/"]')
-            break
-        case 'niceimage.pl':
-            i = q('img[src*="/uploaded/"]')
-            break
-        case 'imagefap.com':
-            j = true
-            //find_text_in_scripts('"contentUrl": "', '"');
-            i = q('#slideshow img[src*="/full/"],#video-html5_html5_api')
-            break
-        case 'olivepix.com':
-            i = q('img[src*="view/"]')
-            break
-        case 'imgkings.com':
-            i = q('img[src*="uploads/"]')
-            if (i) break
-            if (find_text_in_scripts('linkid="', '"', false)) {
-                window.location.href = i.src
-                break
-            } else if (window.location.href.indexOf('imgs') != -1) {
-                // not sure if needed anymore
-                window.location.href = window.location.href.replace(
-                    'imgs',
-                    'imgv'
+        }
+    case 'freeimagehosting.net':
+    case 'uploadhouse.com':
+    case 'fotos-hochladen.net':
+    case 'imgtab.net':
+        i = q('img[src*="uploads/"]')
+        break
+    case 'xtremeshack.com':
+        i = q('img[src*="/photos/"]')
+        break
+    case '500px.com':
+        j = true
+        i = q('#copyrightTooltipContainer img')
+        if (i) {
+            var m = i.src.match('/photo/(\\d+)/')
+            if (m) {
+                var xhttp = new XMLHttpRequest()
+                xhttp.open(
+                    'GET',
+                    'https://api.500px.com/v1/photos?ids=' +
+                        m[1] +
+                        '&image_size=4096'
                 )
-                break
-            } else if (window.location.href.indexOf('img3') != -1) {
-                // not sure if needed anymore
-                window.location.href = window.location.href.replace(
-                    'img3',
-                    'img4'
-                )
-                break
+                xhttp.onload = function () {
+                    if (xhttp.status == 200) {
+                        try {
+                            i.src = JSON.parse(xhttp.response)['photos'][
+                                    m[1]
+                            ]['images'][0]['url']
+                            console.log(
+                                'hacked image resolution to maximum'
+                            )
+                        } catch (e) {
+                            console.warn(e)
+                        }
+                    }
+                }
+                xhttp.send()
             }
-            break
-        case 'imgadult.com':
-            j = true
-            i = q('a.overlay_ad_link')
-            if (i) {
-                i.click()
-                break
+        }
+        break
+    case 'picturepush.com':
+        i = q('img[src*="/photo/"]')
+        break
+    case 'keptarolo.hu':
+        i = q('img[src*="/kep/"]')
+        break
+    case 'truepic.org':
+        i = q('img[src*="/u/"]')
+        break
+    case 'imagearn.com':
+        i = q('img[src*="/imags/"]')
+        break
+    case 'ichan.org':
+        i = q('img[src*="/src/"]')
+        break
+    case 'ibunker.us':
+    case 'hostingpics.net':
+        i = q('img[src*="pics/"]')
+        break
+    case 'dewimg.com':
+    case 'subirimagenes.com':
+    case 'tezzpic.com':
+        j = true
+        dp = true
+        f = document.querySelectorAll("input[type='submit']")
+        if (f.length) {
+            let n
+            for (n = f.length - 1; n >= 0; n--) {
+                if (
+                    window.getComputedStyle(f[n]).visibility != 'hidden' &&
+                        f[n].offsetWidth != 0 &&
+                        f[n].value.indexOf('eply') == -1 &&
+                        f[n].value.indexOf('Log') == -1
+                ) {
+                    f[n].removeAttribute('disabled')
+                    f[n].click()
+                    i = 1
+                    return
+                }
             }
-        case 'imagefolks.com':
-        case 'imgcandy.net':
-        case 'imageteam.org':
-        case 'imgnext.com':
-        case 'hosturimage.com':
-        case 'pixup.us':
-        case 'xximg.net':
-        case 'x.xximg.net':
-        case 'sxpics.nl':
-        case 'sxpix.nl':
-        case 'img.yt':
-        case 'xxxscreens.com':
-        case 'i.sxpics.nl':
-        case 'imageon.org':
-        case 'nimplus.com':
-        case 'imag.nimplus.com':
-        case 'newimagepost.com':
-        case 'fapat.me':
-        case 'imgbe.com':
-        case 'fireimg.cc':
-        case 'rapidimg.net':
-        case 'imgtornado.com':
-        case 'erimge.com':
-        case 'loftlm.ru':
-        case 'tinizo.com':
-        case 'imgpix.net':
-        case 'freeimagehostin.com':
-        case 'sximg.nl':
-        case 'freephotohostin.com':
-        case 'imgpics.nl':
-        case 'imagepics.xyz':
-        case 'imgwo.com':
-        case 'ima.gy':
-        case 'picz.site':
-        case 'allxpix.com':
-        case 'imgblank.com':
-        case 'xeimg.yt':
-        case 'imgmain.com':
-        case 'acidimg.cc':
-        case 'imgpart.com':
-        case 'picmoza.com':
-        case 'imgjazz.xyz':
-        case 'picshost.info':
-        case 'petrovixxxjav.com':
-        case 'placeimg.net':
-        case 'imageshtorm.com':
-        case 'blameless.work':
-        case 'xxx.kodiak.top':
-        case 'xaoutchouc.live':
-        case 'mshelxxx.ru.com':
-        case 'trans.firm.in':
-        case 'xxxwebdlxxx.top':
-        case 'imgdawgknuttz.com':
-        case 'olarixas.xyz':
-        case 'pornhd720p.com':
-            dp = true
-            f = document.getElementsByTagName('input')
-            if (f.length) {
-                f[f.length - 1].removeAttribute('disabled')
-                f[f.length - 1].click()
+        }
+        i = q('img[onload*="scale"]')
+        break
+    case 'crownimg.com':
+        i = q('button')
+        dp = true
+        j = true
+        if (i) {
+            i.click()
+            break
+        }
+    case 'myimg.club':
+    case 'imgmonkey.com':
+    case 'imgdragon.com':
+    case 'imggold.org':
+    case 'levinpic.org':
+    case 'imgtown.net':
+    case 'pixs.cx':
+    case 'kropic.com':
+    case 'outletpic.com':
+    case 'pictwn.com':
+    case 'meetimgz.com':
+        j = true
+        dp = true
+        f = document.querySelectorAll("input[type='submit']")
+        if (f.length) {
+            let n
+            for (n = f.length - 1; n >= 0; n--) {
+                if (
+                    window.getComputedStyle(f[n]).visibility != 'hidden' &&
+                        f[n].offsetWidth != 0 &&
+                        f[n].value.indexOf('eply') == -1 &&
+                        f[n].value.indexOf('Log') == -1
+                ) {
+                    //f[n].removeAttribute("disabled"); ok, let's wait
+                    f[n].click()
+                    break
+                }
             }
-        case 'fotoszok.pl':
-        case 'damimage.com':
-        case 'adultur.com':
-        case 'imagedecode.com':
-        case 'gogoimage.org':
-        case 'imageblinks.com':
-        case 'imglooks.com':
-        case 'ocaload.com':
-        case 'imgstudio.org':
-        case 'goimge.com':
-        case 'imageho.me':
-        case 'imgor.net':
-        case 'icezap.com':
-        case 'imgtrial.com':
-        case 'dimtus.com':
-        case 'imgcat.pw':
-        case 'imgseed.com':
-        case 'imgcredit.xyz':
-        case 'pic.hotimg.site':
-        case 'xfap.fun':
-        case 'xxxwebdlxxx.org':
-            i = q('img[src*="' + iurl + '/upload/"]')
+        }
+    case 'casimages.com':
+    case 'thebestpichost.com':
+    case 'ifotos.pl':
+    case 'subeimagenes.com':
+    case 'vvcap.com':
+    case 'imgtrex.com':
+    case 'pic-upload.de':
+    case 'picusha.net':
+        i = q('img[src*="/img/"]')
+        break
+    case 'imagenetz.de':
+        i = q('img[src*="/img"]')
+        break
+    case 'picatom.com':
+        i = q('img[src*="img/"]')
+        break
+    case 'imgking.xyz':
+    case 'imgazure.com':
+        i = q('img[src*="/img/"]')
+        if (i) {
+            i.src = i.src.replace('p.', '.')
+        }
+        break
+    case 'imgbabes.com':
+    case 'imgflare.com':
+        i = q('input[type="submit"]')
+        dp = true
+        j = true
+        if (i) {
+            i.click()
+            i = null
+        } else {
+            i = q('img[src*="i.php?"]')
+        }
+        break
+    case 'xxxhost.me':
+    case 'bilder-hochladen.net':
+    case 'dumpt.com':
+    case 'imgsin.com':
+    case 'loaditup.de':
+    case '123poze.3x.ro':
+    case 'thaisharing.online.fr':
+    case 'filefap.com':
+    case 'imgswift.com':
+    case '1pic.org':
+        i = q('img[src*="/files/"]')
+        break
+    case 'image18.org':
+        i = q('img[src*="/file"]')
+        break
+    case 'picstate.com':
+        i = q('#image_container a img')
+        break
+    case 'zimagez.com':
+        i = q('img[src*="/full/"]')
+        break
+    case 'niceimage.pl':
+        i = q('img[src*="/uploaded/"]')
+        break
+    case 'imagefap.com':
+        j = true
+        //find_text_in_scripts('"contentUrl": "', '"');
+        i = q('#slideshow img[src*="/full/"],#video-html5_html5_api')
+        break
+    case 'olivepix.com':
+        i = q('img[src*="view/"]')
+        break
+    case 'imgkings.com':
+        i = q('img[src*="uploads/"]')
+        if (i) break
+        if (find_text_in_scripts('linkid="', '"', false)) {
+            window.location.href = i.src
             break
-        case 'imgboom.net':
-            if (window.location.href.indexOf('img-') != -1) {
-                window.location.href = 'http://imgboom.net/view.php'
-                break
-            }
-        case 'thumbnailus.com':
-        case 'imgleveret.com':
-        case 'porn84.org':
-            i = q('input[type="submit"]')
-            dp = true
-            if (i) {
-                i.click()
-                break
-            }
-            i = q('img[src*="' + iurl + '/upload/"].centred')
+        } else if (window.location.href.indexOf('imgs') != -1) {
+            // not sure if needed anymore
+            window.location.href = window.location.href.replace(
+                'imgs',
+                'imgv'
+            )
             break
-        case 'imgking.co':
-            if (window.location.href.indexOf('img-') != -1) {
-                window.location.href = window.location.href.replace(
-                    'img-',
-                    'img2-'
-                )
-                break
-            }
-            i = q('img[src*="' + iurl + '/upload/"]')
+        } else if (window.location.href.indexOf('img3') != -1) {
+            // not sure if needed anymore
+            window.location.href = window.location.href.replace(
+                'img3',
+                'img4'
+            )
             break
-        case 'imgsky.net':
-        case 'imgsee.net':
-        case 'imgzong.xyz':
-        case 'imageking.xyz':
-        case 'imgxx.xyz':
-        case 'imgao.xyz':
-        case 'imgweng.xyz':
-        case 'imgkes.xyz':
-        case 'imgkoi.xyz':
-        case 'imglin.xyz':
-        case 'imgkr.xyz':
-        case 'imgbird.xyz':
-        case 'imgwewo.xyz':
-        case 'imgirx.xyz':
-        case 'imgalor.xyz':
-        case 'imgjut.buzz':
-        case 'imgtrw.buzz':
-        case 'imglina.xyz':
-        case 'imgkuiw.xyz':
-        case 'imgwang.buzz':
-        case 'imgmeno.buzz':
-        case 'imgpekele.buzz':
-        case 'imglqw.buzz':
-        case 'imgyng.buzz':
-        case 'imgbbd.buzz':
-        case 'imgwia.buzz':
-        case 'imgowk.buzz':
-        case 'imgokr.buzz':
-        case 'imgoiu.buzz':
-        case 'imgeza.buzz':
-        case 'mrlzqoe.buzz':
-        case 'imgutkr.store':
-        case 'imghhr.online':
-        case 'imglaiw.store':
-        case 'imgvue.online':
-        case 'imgxgf.store':
-        case 'imgbibam.online':
-        case 'imgqaz.online':
-        case 'imgurt.online':
-        case 'imgwxr.online':
-        case 'imgyre.online':
-        case 'picqaxs.cfd':
-        case 'picvvvd.sbs':
-        case 'imgjjtr.sbs':
-            i = q('button')
-            dp = true
-            j = true
-            if (i) {
-                i.click()
-            }
-            i = q('.big_img_box img[src*="http"]')
+        }
+        break
+    case 'imgadult.com':
+        j = true
+        i = q('a.overlay_ad_link')
+        if (i) {
+            i.click()
             break
-        case 'picspornfree.me':
-        case 'hotimage.uk':
-        case 'xxxwebdlxxx.org':
-        case 'hdmoza.com':
-            i = q('input[type="submit"]')
-            dp = true
-            if (i) {
-                i.click()
-                break
-            }
-        case 'avenuexxx.com':
-        case 'uploadimagex.com':
-        case 'hostingkartinok.com':
-        case 'bellazon':
-        case 'savepice.ru':
-            i = q('img[src*="/upload"]')
+        }
+    case 'imagefolks.com':
+    case 'imgcandy.net':
+    case 'imageteam.org':
+    case 'imgnext.com':
+    case 'hosturimage.com':
+    case 'pixup.us':
+    case 'xximg.net':
+    case 'x.xximg.net':
+    case 'sxpics.nl':
+    case 'sxpix.nl':
+    case 'img.yt':
+    case 'xxxscreens.com':
+    case 'i.sxpics.nl':
+    case 'imageon.org':
+    case 'nimplus.com':
+    case 'imag.nimplus.com':
+    case 'newimagepost.com':
+    case 'fapat.me':
+    case 'imgbe.com':
+    case 'fireimg.cc':
+    case 'rapidimg.net':
+    case 'imgtornado.com':
+    case 'erimge.com':
+    case 'loftlm.ru':
+    case 'tinizo.com':
+    case 'imgpix.net':
+    case 'freeimagehostin.com':
+    case 'sximg.nl':
+    case 'freephotohostin.com':
+    case 'imgpics.nl':
+    case 'imagepics.xyz':
+    case 'imgwo.com':
+    case 'ima.gy':
+    case 'picz.site':
+    case 'allxpix.com':
+    case 'imgblank.com':
+    case 'xeimg.yt':
+    case 'imgmain.com':
+    case 'acidimg.cc':
+    case 'imgpart.com':
+    case 'picmoza.com':
+    case 'imgjazz.xyz':
+    case 'picshost.info':
+    case 'petrovixxxjav.com':
+    case 'placeimg.net':
+    case 'imageshtorm.com':
+    case 'blameless.work':
+    case 'xxx.kodiak.top':
+    case 'xaoutchouc.live':
+    case 'mshelxxx.ru.com':
+    case 'trans.firm.in':
+    case 'xxxwebdlxxx.top':
+    case 'imgdawgknuttz.com':
+    case 'olarixas.xyz':
+    case 'pornhd720p.com':
+        dp = true
+        f = document.getElementsByTagName('input')
+        if (f.length) {
+            f[f.length - 1].removeAttribute('disabled')
+            f[f.length - 1].click()
+        }
+    case 'fotoszok.pl':
+    case 'damimage.com':
+    case 'adultur.com':
+    case 'imagedecode.com':
+    case 'gogoimage.org':
+    case 'imageblinks.com':
+    case 'imglooks.com':
+    case 'ocaload.com':
+    case 'imgstudio.org':
+    case 'goimge.com':
+    case 'imageho.me':
+    case 'imgor.net':
+    case 'icezap.com':
+    case 'imgtrial.com':
+    case 'dimtus.com':
+    case 'imgcat.pw':
+    case 'imgseed.com':
+    case 'imgcredit.xyz':
+    case 'pic.hotimg.site':
+    case 'xfap.fun':
+    case 'xxxwebdlxxx.org':
+        i = q('img[src*="' + iurl + '/upload/"]')
+        break
+    case 'imgboom.net':
+        if (window.location.href.indexOf('img-') != -1) {
+            window.location.href = 'http://imgboom.net/view.php'
             break
-        case 'imgseeds.com':
-            i = q('input')
-            if (i) {
-                i.click()
-                break
-            }
-        case 'imghit.com':
-            i = q('img[alt="image"]')
+        }
+    case 'thumbnailus.com':
+    case 'imgleveret.com':
+    case 'porn84.org':
+        i = q('input[type="submit"]')
+        dp = true
+        if (i) {
+            i.click()
             break
-        case 'image-share.com':
-            i = q('img[src*="upload/"]')
+        }
+        i = q('img[src*="' + iurl + '/upload/"].centred')
+        break
+    case 'imgking.co':
+        if (window.location.href.indexOf('img-') != -1) {
+            window.location.href = window.location.href.replace(
+                'img-',
+                'img2-'
+            )
             break
-        case 'bilder-upload.eu':
-            i = q('input[src*="upload/"]')
+        }
+        i = q('img[src*="' + iurl + '/upload/"]')
+        break
+    case 'imgsky.net':
+    case 'imgsee.net':
+    case 'imgzong.xyz':
+    case 'imageking.xyz':
+    case 'imgxx.xyz':
+    case 'imgao.xyz':
+    case 'imgweng.xyz':
+    case 'imgkes.xyz':
+    case 'imgkoi.xyz':
+    case 'imglin.xyz':
+    case 'imgkr.xyz':
+    case 'imgbird.xyz':
+    case 'imgwewo.xyz':
+    case 'imgirx.xyz':
+    case 'imgalor.xyz':
+    case 'imgjut.buzz':
+    case 'imgtrw.buzz':
+    case 'imglina.xyz':
+    case 'imgkuiw.xyz':
+    case 'imgwang.buzz':
+    case 'imgmeno.buzz':
+    case 'imgpekele.buzz':
+    case 'imglqw.buzz':
+    case 'imgyng.buzz':
+    case 'imgbbd.buzz':
+    case 'imgwia.buzz':
+    case 'imgowk.buzz':
+    case 'imgokr.buzz':
+    case 'imgoiu.buzz':
+    case 'imgeza.buzz':
+    case 'mrlzqoe.buzz':
+    case 'imgutkr.store':
+    case 'imghhr.online':
+    case 'imglaiw.store':
+    case 'imgvue.online':
+    case 'imgxgf.store':
+    case 'imgbibam.online':
+    case 'imgqaz.online':
+    case 'imgurt.online':
+    case 'imgwxr.online':
+    case 'imgyre.online':
+    case 'picqaxs.cfd':
+    case 'picvvvd.sbs':
+    case 'imgjjtr.sbs':
+        i = q('button')
+        dp = true
+        j = true
+        if (i) {
+            i.click()
+        }
+        i = q('.big_img_box img[src*="http"]')
+        break
+    case 'picspornfree.me':
+    case 'hotimage.uk':
+    case 'xxxwebdlxxx.org':
+    case 'hdmoza.com':
+        i = q('input[type="submit"]')
+        dp = true
+        if (i) {
+            i.click()
             break
-        case 'picload.org':
-        case 'imagecross.com':
-        case 'npicture.net':
-        case 'public-pic.de':
-        case 'picbug.ru':
-            i = q('img[src*="' + iurl + '/image"]')
+        }
+    case 'avenuexxx.com':
+    case 'uploadimagex.com':
+    case 'hostingkartinok.com':
+    case 'bellazon':
+    case 'savepice.ru':
+        i = q('img[src*="/upload"]')
+        break
+    case 'imgseeds.com':
+        i = q('input')
+        if (i) {
+            i.click()
             break
-        case 'yande.re':
-        case 'konachan.com':
-        case 'konachan.net':
-            i = q('a[href*="' + iurl + '/image"]')
-            if (i) {
-                i.src = i.href
-            }
+        }
+    case 'imghit.com':
+        i = q('img[alt="image"]')
+        break
+    case 'image-share.com':
+        i = q('img[src*="upload/"]')
+        break
+    case 'bilder-upload.eu':
+        i = q('input[src*="upload/"]')
+        break
+    case 'picload.org':
+    case 'imagecross.com':
+    case 'npicture.net':
+    case 'public-pic.de':
+    case 'picbug.ru':
+        i = q('img[src*="' + iurl + '/image"]')
+        break
+    case 'yande.re':
+    case 'konachan.com':
+    case 'konachan.net':
+        i = q('a[href*="' + iurl + '/image"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'imagesup.net':
+        i = q('a[href*="/di-"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'cyberpics.net':
+    case 'fastimages.ru':
+    case 'hot-file.org':
+    case 'image.siroro.co.uk':
+    case 'qattach.com':
+    case 'fotohelp.kz':
+    case 'pic-you.com':
+        i = q('a[href*="/di/"]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'imagehost.thasnasty.com':
+    case 'oxily.com':
+    case 'ghanaimages.co':
+    case 'knecht.novarata.net':
+    case 'img.irandeliver.com':
+    case 'xferz.com':
+    case 'up.kfesfahan.com':
+    case 'upload.khontai.com':
+    case 'image.pantyhosemania.info':
+    case 't.hogor.net':
+    case 'your-pictures.net':
+        i = q('a[href*="?di="]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'pixxxels.org':
+    case 'postimg.org':
+    case 'postimg.cc':
+    case 'pixxxels.cc':
+        j = true
+        i = q('a[href*="?dl="]')
+        if (i) {
+            i.src = i.href
+        }
+        break
+    case 'zimage.fr':
+        i = q('img[src*="images.php"]')
+        if (i) {
+            i.src = i.src.replace('.php?nom=', '/')
             break
-        case 'imagesup.net':
-            i = q('a[href*="/di-"]')
-            if (i) {
-                i.src = i.href
-            }
+        }
+    case 'dumppix.com':
+        i = q('a[href*="enter"]')
+        if (i) {
+            window.location.href = i.href
             break
-        case 'cyberpics.net':
-        case 'fastimages.ru':
-        case 'hot-file.org':
-        case 'image.siroro.co.uk':
-        case 'qattach.com':
-        case 'fotohelp.kz':
-        case 'pic-you.com':
-            i = q('a[href*="/di/"]')
-            if (i) {
-                i.src = i.href
-            }
+        }
+    case 'mrjh.org':
+    case 'stuffed.ru':
+    case 'rapid-img.de':
+    case 'ngarko.online.fr':
+    case 'freeuploadimages.org':
+    case 'picszone.net':
+    case 'images.share-films.net':
+    case 'bildjunkies.de':
+    case 'foto.hcfor.pl':
+    case 'pic.tooptarinha.com':
+    case 'poopr.org':
+    case 'xp-images.hi2.ro':
+    case 'dayzeddesigns.com':
+    case 'freeimghosting.co.uk':
+    case 'upload.removed.us':
+    case 'imghost.pl':
+    case 'udostepniaj.pl':
+    case 'ngarko.free.fr':
+    case 'images.collectiontricks.it':
+    case '244pix.com':
+    case 'imgboxxx.com':
+    case 'imghere.net':
+    case 'imgdope.com':
+    case 'hostmat.eu':
+    case 'imgdream.net':
+    case 'imgcentral.com':
+        i = q('img[src*="images/"]')
+        break
+    case 'use.com':
+        i = q('img[src*="images/"][onload]')
+        if (i) {
+            i.src = i.src.replace('/s_2/', '/s_5/')
+        }
+        break
+    case '1y9y.com':
+    case 'host4images.com':
+    case 'aveimage.com':
+        i = q('img#photo')
+        break
+    case 'freeimgup.com':
+    case 'picturevip.com':
+    case 'image-load.net':
+    case 'upload.djmaster.fr':
+    case 'b4he.com':
+    case 'firepic.org':
+    case 'overdream.cz':
+    case 'fastpics.net':
+    case 'ii4.ru':
+    case 'picuploader.de':
+    case 'smages.com':
+    case 'pictureshack.ru':
+    case 'imgbox.de':
+    case 'imagehosting.cz':
+    case '9foto.ru':
+    case 'imagesloading.altervista.org':
+    case 'phpbbmods.it':
+    case 'lakhdaria.net':
+    case 'partizansk.eu':
+    case 'webjardiner.com':
+    case 'imgup.com':
+    case 'iezz.com':
+    case 'picturescream.com':
+    case 'all-poster.ru':
+    case 'extraimage.net':
+    case 'imagexxx18.com':
+    case 'imgvisits.com':
+    case 'imghall.com':
+    case 'picturedent.org':
+        i = q('img[src*="/images/"]')
+        break
+    case 'intergranada.com':
+        i = q('img[src*="/images/images/"]')
+        break
+    case 'pixelup.net':
+        i = q('center img[src*="/images/"]')
+        break
+    case 'saveimg.ru':
+    case 'imglink.ru':
+    case '4put.ru':
+    case 'sharepic.biz':
+    case 'you-logo.ru':
+    case 'powerlogo.ru':
+        i = q('img[src*="pictures/"]')
+        break
+    case 'xenopix.com':
+        i = q('img[src*="/pix/"]')
+        break
+    case 'chronos.to':
+    case 'imgmaid.net':
+    case 'pic-maniac.com':
+    case 'coreimg.net':
+    case 'imx.to':
+        j = true
+        i = q('input[type="submit"]')
+        dp = true
+        if (i) {
+            i.click()
             break
-        case 'imagehost.thasnasty.com':
-        case 'oxily.com':
-        case 'ghanaimages.co':
-        case 'knecht.novarata.net':
-        case 'img.irandeliver.com':
-        case 'xferz.com':
-        case 'up.kfesfahan.com':
-        case 'upload.khontai.com':
-        case 'image.pantyhosemania.info':
-        case 't.hogor.net':
-        case 'your-pictures.net':
-            i = q('a[href*="?di="]')
-            if (i) {
-                i.src = i.href
-            }
+        }
+    case 'imgspice.com':
+    case 'imagetwist.com':
+    case 'dev.imagetwist.com':
+    case 'imagexport.com':
+    case 'pixroute.com':
+    case 'pzy.be':
+    case 'funkyimg.com':
+    case 'itmages.ru':
+    case 'imagenpic.com':
+    case 'turbopix.fr':
+    case 'pictureturn.com':
+    case 'pixic.ru':
+    case 'nyanimg.com':
+    case 'geekpics.in':
+    case 'imageporter.com':
+    case 'imagenimage.com':
+    case 'imageshimage.com':
+    case 'imagedax.net':
+    case 'pornimagex.com':
+    case 'sendpic.org':
+    case 'imagehaha.com':
+    case 'picshick.com':
+    case 'photo-screen.ru':
+        i = q('img[src*="/i/"]')
+        break
+    case 'imguniversal.com':
+    case 'imgclick.net': // no submits
+    case 'imgsto.com':
+    case 'fappic.com':
+    case 'imgsen.com':
+    case 'premalo.com':
+    case 'picdollar.com':
+    case 'fotokiz.com':
+    case 'silverpic.com':
+    case 'pics4upload.com':
+    case 'imgstar.eu':
+        i = q("form input[type='submit'][value*='continue to image' i]")
+        dp = true
+        if (i) {
+            i.click()
+        }
+        i = q("img.pic[src*='/i/'], img.pic[src*='/img/']")
+        break
+    case 'scrin.org':
+        i = q('a[href*="/i/"]')
+        if (i) {
+            i.src = i.href
             break
-        case 'pixxxels.org':
-        case 'postimg.org':
-        case 'postimg.cc':
-        case 'pixxxels.cc':
-            j = true
-            i = q('a[href*="?dl="]')
-            if (i) {
-                i.src = i.href
-            }
+        }
+        i = q('img[src*="/i/"]')
+        break
+    case 'miragepics.com':
+        i = q('input[value*="' + iurl + '/images/"]')
+        if (i) {
+            i.src = i.value
+        }
+        break
+    case 'ipic.su':
+        i = q('input[value*="' + iurl + ' img/"]')
+        if (i) {
+            i.src = i.value
+        }
+        break
+    case 'mixbase.net':
+        i = q('img[src*="media/storage/"]')
+        break
+    case 'image2you.ru':
+        i = q('img[src*="images/"]')
+        if (i) {
+            i.src = i.src.replace('2_', '')
+        }
+        break
+    case 'imgmade.com':
+        i = q('form')
+        dp = true
+        if (i) {
+            i.submit()
             break
-        case 'zimage.fr':
-            i = q('img[src*="images.php"]')
-            if (i) {
-                i.src = i.src.replace('.php?nom=', '/')
-                break
-            }
-        case 'dumppix.com':
-            i = q('a[href*="enter"]')
-            if (i) {
-                window.location.href = i.href
-                break
-            }
-        case 'mrjh.org':
-        case 'stuffed.ru':
-        case 'rapid-img.de':
-        case 'ngarko.online.fr':
-        case 'freeuploadimages.org':
-        case 'picszone.net':
-        case 'images.share-films.net':
-        case 'bildjunkies.de':
-        case 'foto.hcfor.pl':
-        case 'pic.tooptarinha.com':
-        case 'poopr.org':
-        case 'xp-images.hi2.ro':
-        case 'dayzeddesigns.com':
-        case 'freeimghosting.co.uk':
-        case 'upload.removed.us':
-        case 'imghost.pl':
-        case 'udostepniaj.pl':
-        case 'ngarko.free.fr':
-        case 'images.collectiontricks.it':
-        case '244pix.com':
-        case 'imgboxxx.com':
-        case 'imghere.net':
-        case 'imgdope.com':
-        case 'hostmat.eu':
-        case 'imgdream.net':
-        case 'imgcentral.com':
-            i = q('img[src*="images/"]')
+        }
+    case 'imgdrive.net':
+    case 'imgtaxi.com':
+    case 'imgwallet.com':
+        j = true
+        i = q('a.overlay_ad_link')
+        if (i) {
+            i.click()
             break
-        case 'use.com':
-            i = q('img[src*="images/"][onload]')
-            if (i) {
-                i.src = i.src.replace('/s_2/', '/s_5/')
-            }
+        }
+    case 'pixhost.to':
+    case 'imgtiger.com':
+    case 'imgserve.net':
+    case 'imgdino.com':
+    case 'overpic.net':
+    case 'imagesocket.com':
+    case 'hostpic.org':
+    case 'zapodaj.net':
+    case 'jpegshare.net':
+    case 'screenshot.ru':
+    case 'imagefile.org':
+    case 'zapisz.net':
+    case 'addyourpics.com':
+    case 'imgbank.cz':
+    case 'showmyimage.com':
+    case 'upload.supreme-elite.fr':
+    case 'myimg.me':
+    case 'heberg-hush.org':
+    case 'oltaciyukle.com':
+    case 'pichost.name':
+    case 'imagend.com':
+    case 'imagerocket.com':
+    case 'hyyathost.com':
+    case 'images.reptilescanada.com':
+    case 'wepic.ru':
+    case 'upload-image.fr':
+    case 'images.baconbits.org':
+    case 'upanh.ovo.vn':
+    case 'wrzucaj.net':
+    case 'heberge-images.com':
+    case 'image.kg':
+    case 'savemyimage.com':
+    case 'img.dramacafe.tv':
+    case 'fapping.empornium.sx':
+    case 'beeimg.com':
+    case 'youpicture.org':
+    case 'vavvi.com':
+    case 'imgzap.com':
+    case 'crazyimg.com':
+    case 'extraimago.com':
+    case 'ftop.ru':
+    case 'porncomix.info':
+    case 'luxpic.ru':
+    case 'passpix.com':
+    case 'trumbhost.com':
+        //Chevereto 2.x
+        i = q('img[src*="' + iurl + '/images/"]')
+        break
+    case 'shareimages.com':
+    case 'imagesmax.de':
+    case 'bilder.nixhelp.de':
+        i = q('img[src*="' + iurl + '/images"]')
+        break
+    case 'imgfantasy.com':
+    case 'imageporn.eu':
+    case 'imgsmile.com':
+    case 'imgsay.com':
+    case '0img.net':
+    case 'imagedisco.net':
+        //IMGReserve
+        j = true
+        dp = true
+        i = q('input[value="YES"]')
+        if (i) {
+            i.onclick()
             break
-        case '1y9y.com':
-        case 'host4images.com':
-        case 'aveimage.com':
-            i = q('img#photo')
-            break
-        case 'freeimgup.com':
-        case 'picturevip.com':
-        case 'image-load.net':
-        case 'upload.djmaster.fr':
-        case 'b4he.com':
-        case 'firepic.org':
-        case 'overdream.cz':
-        case 'fastpics.net':
-        case 'ii4.ru':
-        case 'picuploader.de':
-        case 'smages.com':
-        case 'pictureshack.ru':
-        case 'imgbox.de':
-        case 'imagehosting.cz':
-        case '9foto.ru':
-        case 'imagesloading.altervista.org':
-        case 'phpbbmods.it':
-        case 'lakhdaria.net':
-        case 'partizansk.eu':
-        case 'webjardiner.com':
-        case 'imgup.com':
-        case 'iezz.com':
-        case 'picturescream.com':
-        case 'all-poster.ru':
-        case 'extraimage.net':
-        case 'imagexxx18.com':
-        case 'imgvisits.com':
-        case 'imghall.com':
-        case 'picturedent.org':
-            i = q('img[src*="/images/"]')
-            break
-        case 'intergranada.com':
-            i = q('img[src*="/images/images/"]')
-            break
-        case 'pixelup.net':
-            i = q('center img[src*="/images/"]')
-            break
-        case 'saveimg.ru':
-        case 'imglink.ru':
-        case '4put.ru':
-        case 'sharepic.biz':
-        case 'you-logo.ru':
-        case 'powerlogo.ru':
-            i = q('img[src*="pictures/"]')
-            break
-        case 'xenopix.com':
-            i = q('img[src*="/pix/"]')
-            break
-        case 'chronos.to':
-        case 'imgmaid.net':
-        case 'pic-maniac.com':
-        case 'coreimg.net':
-        case 'imx.to':
-            j = true
-            i = q('input[type="submit"]')
-            dp = true
-            if (i) {
-                i.click()
-                break
-            }
-        case 'imgspice.com':
-        case 'imagetwist.com':
-        case 'dev.imagetwist.com':
-        case 'imagexport.com':
-        case 'pixroute.com':
-        case 'pzy.be':
-        case 'funkyimg.com':
-        case 'itmages.ru':
-        case 'imagenpic.com':
-        case 'turbopix.fr':
-        case 'pictureturn.com':
-        case 'pixic.ru':
-        case 'nyanimg.com':
-        case 'geekpics.in':
-        case 'imageporter.com':
-        case 'imagenimage.com':
-        case 'imageshimage.com':
-        case 'imagedax.net':
-        case 'pornimagex.com':
-        case 'sendpic.org':
-        case 'imagehaha.com':
-        case 'picshick.com':
-        case 'photo-screen.ru':
-            i = q('img[src*="/i/"]')
-            break
-        case 'imguniversal.com':
-        case 'imgclick.net': // no submits
-        case 'imgsto.com':
-        case 'fappic.com':
-        case 'imgsen.com':
-        case 'premalo.com':
-        case 'picdollar.com':
-        case 'fotokiz.com':
-        case 'silverpic.com':
-        case 'pics4upload.com':
-        case 'imgstar.eu':
-            i = q("form input[type='submit'][value*='continue to image' i]")
-            dp = true
-            if (i) {
-                i.click()
-            }
-            i = q("img.pic[src*='/i/'], img.pic[src*='/img/']")
-            break
-        case 'scrin.org':
-            i = q('a[href*="/i/"]')
-            if (i) {
-                i.src = i.href
-                break
-            }
-            i = q('img[src*="/i/"]')
-            break
-        case 'miragepics.com':
-            i = q('input[value*="' + iurl + '/images/"]')
-            if (i) {
-                i.src = i.value
-            }
-            break
-        case 'ipic.su':
-            i = q('input[value*="' + iurl + ' img/"]')
-            if (i) {
-                i.src = i.value
-            }
-            break
-        case 'mixbase.net':
-            i = q('img[src*="media/storage/"]')
-            break
-        case 'image2you.ru':
-            i = q('img[src*="images/"]')
-            if (i) {
-                i.src = i.src.replace('2_', '')
-            }
-            break
-        case 'imgmade.com':
-            i = q('form')
-            dp = true
-            if (i) {
-                i.submit()
-                break
-            }
-        case 'imgdrive.net':
-        case 'imgtaxi.com':
-        case 'imgwallet.com':
-            j = true
-            i = q('a.overlay_ad_link')
-            if (i) {
-                i.click()
-                break
-            }
-        case 'pixhost.to':
-        case 'imgtiger.com':
-        case 'imgserve.net':
-        case 'imgdino.com':
-        case 'overpic.net':
-        case 'imagesocket.com':
-        case 'hostpic.org':
-        case 'zapodaj.net':
-        case 'jpegshare.net':
-        case 'screenshot.ru':
-        case 'imagefile.org':
-        case 'zapisz.net':
-        case 'addyourpics.com':
-        case 'imgbank.cz':
-        case 'showmyimage.com':
-        case 'upload.supreme-elite.fr':
-        case 'myimg.me':
-        case 'heberg-hush.org':
-        case 'oltaciyukle.com':
-        case 'pichost.name':
-        case 'imagend.com':
-        case 'imagerocket.com':
-        case 'hyyathost.com':
-        case 'images.reptilescanada.com':
-        case 'wepic.ru':
-        case 'upload-image.fr':
-        case 'images.baconbits.org':
-        case 'upanh.ovo.vn':
-        case 'wrzucaj.net':
-        case 'heberge-images.com':
-        case 'image.kg':
-        case 'savemyimage.com':
-        case 'img.dramacafe.tv':
-        case 'fapping.empornium.sx':
-        case 'beeimg.com':
-        case 'youpicture.org':
-        case 'vavvi.com':
-        case 'imgzap.com':
-        case 'crazyimg.com':
-        case 'extraimago.com':
-        case 'ftop.ru':
-        case 'porncomix.info':
-        case 'luxpic.ru':
-        case 'passpix.com':
-        case 'trumbhost.com':
-            //Chevereto 2.x
-            i = q('img[src*="' + iurl + '/images/"]')
-            break
-        case 'shareimages.com':
-        case 'imagesmax.de':
-        case 'bilder.nixhelp.de':
-            i = q('img[src*="' + iurl + '/images"]')
-            break
-        case 'imgfantasy.com':
-        case 'imageporn.eu':
-        case 'imgsmile.com':
-        case 'imgsay.com':
-        case '0img.net':
-        case 'imagedisco.net':
-            //IMGReserve
-            j = true
-            dp = true
-            i = q('input[value="YES"]')
-            if (i) {
-                i.onclick()
-                break
-            }
-        case 'pic-upload.de':
-        case 'shrani.najdi.si':
-        case 'imageab.com':
-        case 'turboimagehost.com':
-            i = q('img[onclick*="(this"]')
-            break
-        case 'joblo.com':
-            i = q('img')
-            if (i) {
-                i.src =
+        }
+    case 'pic-upload.de':
+    case 'shrani.najdi.si':
+    case 'imageab.com':
+    case 'turboimagehost.com':
+        i = q('img[onclick*="(this"]')
+        break
+    case 'joblo.com':
+        i = q('img')
+        if (i) {
+            i.src =
                     'http://www.joblo.com/moviehotties/images/profile-gallery/orig' +
-                    window.location.href.substr(
-                        window.location.href.lastIndexOf('/')
-                    )
-            }
-            break
-        case 'img.folluo.me':
-        case 'sizzlingclicks.com':
-        case 'imgsha.com':
-            i = q('img[data-load="full"]')
-            break
-        case 'yapx.ru':
-            j = true
-            if (q('footer')) {
-                f = document.body.querySelectorAll('[data-gallery-index]')
-                if (f.length === 1) {
-                    //i = f[0];
-                    i = document.head.querySelector(
-                        'meta[property="og:image:secure_url"]'
-                    )
-                    if (i) {
-                        i.src = i.content
-                    }
-                } else {
-                    is_gallery = true
+                        window.location.href.substr(
+                            window.location.href.lastIndexOf('/')
+                        )
+        }
+        break
+    case 'img.folluo.me':
+    case 'sizzlingclicks.com':
+    case 'imgsha.com':
+        i = q('img[data-load="full"]')
+        break
+    case 'yapx.ru':
+        j = true
+        if (q('footer')) {
+            f = document.body.querySelectorAll('[data-gallery-index]')
+            if (f.length === 1) {
+                //i = f[0];
+                i = document.head.querySelector(
+                    'meta[property="og:image:secure_url"]'
+                )
+                if (i) {
+                    i.src = i.content
                 }
-            }
-            break
-        case 'vfl.ru':
-            i = q('img[src*="/ii/"]')
-            break
-        case 'suckmypic.net':
-            i = q('#theImage')
-            break
-        case 'piccy.info':
-            i = q('a[href*="/orig/"]')
-            if (i) {
-                i.click()
-                return
             } else {
-                i = q('img#mainim')
+                is_gallery = true
             }
-            break
-        case 't.me':
-        case 'telegram.me':
-            j = true
-            if (document.querySelector('body.body_widget_post')) {
-                f = document.querySelectorAll(
-                    '.tgme_widget_message_photo_wrap[style*="/file/"]'
-                )
-                if (f.length === 1) {
-                    i = f[0]
-                    i.src = i.style.backgroundImage
-                        .slice(4, -1)
-                        .replace(/"/g, '')
-                    if (window.self !== window.top) {
-                        window.top.location.href = window.self.location.href
-                    }
+        }
+        break
+    case 'vfl.ru':
+        i = q('img[src*="/ii/"]')
+        break
+    case 'suckmypic.net':
+        i = q('#theImage')
+        break
+    case 'piccy.info':
+        i = q('a[href*="/orig/"]')
+        if (i) {
+            i.click()
+            return
+        } else {
+            i = q('img#mainim')
+        }
+        break
+    case 't.me':
+    case 'telegram.me':
+        j = true
+        if (document.querySelector('body.body_widget_post')) {
+            f = document.querySelectorAll(
+                '.tgme_widget_message_photo_wrap[style*="/file/"]'
+            )
+            if (f.length === 1) {
+                i = f[0]
+                i.src = i.style.backgroundImage
+                    .slice(4, -1)
+                    .replace(/"/g, '')
+                if (window.self !== window.top) {
+                    window.top.location.href = window.self.location.href
                 }
             }
-            break
-        case 'comment-cdn.9gag.com':
-            i = q('img')
-            if (i) {
-                i.src = window.location.hash.substring(
-                    1,
-                    window.location.hash.length
+        }
+        break
+    case 'comment-cdn.9gag.com':
+        i = q('img')
+        if (i) {
+            i.src = window.location.hash.substring(
+                1,
+                window.location.hash.length
+            )
+        }
+        break
+    case 'xhamster.com':
+    case 'xhamster.desi':
+    case 'xhamster3.com':
+    case 'xhamster4.com':
+    case 'xhamster11.com':
+    case 'xhamster19.com':
+        j = true
+        i = q('div.fotorama__active>img.fotorama__img')
+        break
+    case 'imgtorrnt.in':
+        window.location.replace(
+            'https://i.imgur.com/' +
+                window.location.href.substr(
+                    window.location.href.lastIndexOf('=') + 1
                 )
-            }
+        )
+    case 'trans.firm.in':
+        if (
+            window.location.href.search(
+                /\.(?:jpe?g|png|gif|webp)\.html$/i
+            ) != -1
+        ) {
+            //check whether it's a valid image url
+            i = { src: window.location.href.replace('.html', '') }
+        }
+    case 'vipr.im':
+        j = true
+        i = q('a.ddownloader[download]')
+        if (i) {
+            i.src = i.href
             break
+        }
+        break
+    case 'bdsmlust.com':
+        i = q('#image-viewer > div#image-viewer-container > img');
+        break;
+    default: // dynamic subdomain
+        switch (host.substr(host.indexOf('.') + 1)) {
         case 'xhamster.com':
         case 'xhamster.desi':
         case 'xhamster3.com':
@@ -3090,144 +3128,107 @@ function makeworld() {
             j = true
             i = q('div.fotorama__active>img.fotorama__img')
             break
-        case 'imgtorrnt.in':
-            window.location.replace(
-                'https://i.imgur.com/' +
-                    window.location.href.substr(
-                        window.location.href.lastIndexOf('=') + 1
-                    )
+        case 'tumblr.com':
+        case 'media.tumblr.com':
+            f = document.head.querySelectorAll(
+                'meta[property="og:image"]'
             )
-        case 'trans.firm.in':
-            if (
-                window.location.href.search(
-                    /\.(?:jpe?g|png|gif|webp)\.html$/i
-                ) != -1
-            ) {
-                //check whether it's a valid image url
-                i = { src: window.location.href.replace('.html', '') }
+            if (f.length === 1) {
+                i = document.head.querySelector(
+                    'meta[property="og:video"]'
+                )
+                if (!i) {
+                    i = f[0]
+                    i.src = f[0].content
+                } else {
+                    i.src = i.content
+                }
+            } else if (f.length > 1) {
+                is_gallery = true
+            } else {
+                i = document.querySelector(
+                    'div#base-container > div > div > div > div > img'
+                )
             }
-        case 'vipr.im':
-            j = true
-            i = q('a.ddownloader[download]')
+            break
+        case 'wikipedia.org':
+        case 'wikimedia.org':
+            i = q('a[href*="/upload"]')
             if (i) {
                 i.src = i.href
+            }
+            break
+        case 'imgcredit.xyz':
+            i = q('img[src*="/upload/"]')
+            break
+        case 'photobucket.com':
+            find_text_in_scripts('originalUrl":"', '"')
+            break
+        case 'lostpic.net':
+            //chevereto 3.x
+            i = document.head.querySelector('link[rel="image_src"]')
+            if (i) {
+                i.src = i.href
+            }
+            break
+        case 'freeamateurteens.net':
+            i = q('img[src*="images/"]')
+            break
+        case 'otofotki.pl':
+            i = q('img[src*="/obrazki/"]')
+            break
+        case 'tinypic.com':
+            i = q('img#imgElement')
+            break
+        case 'imagilive.com':
+            i = q('a.button')
+            if (i) {
+                dp = true
+                i.click()
                 break
             }
+            i = q('img[src*="' + iurl + '"]')
             break
-        case 'bdsmlust.com':
-            i = qdiv('#image-viewer > div#image-viewer-container > img')
-        default: // dynamic subdomain
-            switch (host.substr(host.indexOf('.') + 1)) {
-                case 'xhamster.com':
-                case 'xhamster.desi':
-                case 'xhamster3.com':
-                case 'xhamster4.com':
-                case 'xhamster11.com':
-                case 'xhamster19.com':
-                    j = true
-                    i = q('div.fotorama__active>img.fotorama__img')
-                    break
-                case 'tumblr.com':
-                case 'media.tumblr.com':
-                    f = document.head.querySelectorAll(
-                        'meta[property="og:image"]'
-                    )
-                    if (f.length === 1) {
-                        i = document.head.querySelector(
-                            'meta[property="og:video"]'
-                        )
-                        if (!i) {
-                            i = f[0]
-                            i.src = f[0].content
-                        } else {
-                            i.src = i.content
-                        }
-                    } else if (f.length > 1) {
-                        is_gallery = true
-                    } else {
-                        i = document.querySelector(
-                            'div#base-container > div > div > div > div > img'
-                        )
-                    }
-                    break
-                case 'wikipedia.org':
-                case 'wikimedia.org':
-                    i = q('a[href*="/upload"]')
-                    if (i) {
-                        i.src = i.href
-                    }
-                    break
-                case 'imgcredit.xyz':
-                    i = q('img[src*="/upload/"]')
-                    break
-                case 'photobucket.com':
-                    find_text_in_scripts('originalUrl":"', '"')
-                    break
-                case 'lostpic.net':
-                    //chevereto 3.x
-                    i = document.head.querySelector('link[rel="image_src"]')
-                    if (i) {
-                        i.src = i.href
-                    }
-                    break
-                case 'freeamateurteens.net':
-                    i = q('img[src*="images/"]')
-                    break
-                case 'otofotki.pl':
-                    i = q('img[src*="/obrazki/"]')
-                    break
-                case 'tinypic.com':
-                    i = q('img#imgElement')
-                    break
-                case 'imagilive.com':
-                    i = q('a.button')
-                    if (i) {
-                        dp = true
-                        i.click()
-                        break
-                    }
-                    i = q('img[src*="' + iurl + '"]')
-                    break
-                default: // for user-added sites
-                    j = true
-                    console.warn('HJI is running on a custom website')
+        default: // for user-added sites
+            j = true
+            console.warn('HJI is running on a custom website')
 
-                    if (document.readyState !== 'loading') {
-                        // DOM loaded
-                        f = document.querySelectorAll('img')
-                        if (f.length !== 0) {
-                            let b = 0
-                            for (let n = 0; n < f.length; n++) {
-                                if (f[n].naturalWidth == 0 && !f[n].complete) {
-                                    // not yet loaded
-                                    if (timeout < 4000) {
-                                        console.warn(
-                                            'waiting for this image to start loading to see its size and compare with others: ',
-                                            f[n]
-                                        )
-                                        b = -1
-                                        break
-                                    } // waited for 3+ sec, that's enough
-                                    else {
-                                        console.warn('skipping broken images')
-                                        continue // skip the broken image
-                                    }
-                                } else if (
-                                    f[n].naturalWidth * f[n].naturalHeight >=
-                                    f[b].naturalWidth * f[b].naturalHeight
-                                ) {
-                                    b = n
-                                }
+            if (document.readyState !== 'loading') {
+                // DOM loaded
+                f = document.querySelectorAll('img')
+                if (f.length !== 0) {
+                    let b = 0
+                    for (let n = 0; n < f.length; n++) {
+                        if (f[n].naturalWidth == 0 && !f[n].complete) {
+                            // not yet loaded
+                            if (timeout < 4000) {
+                                console.warn(
+                                    'waiting for this image to start loading to see its size and compare with others: ',
+                                    f[n]
+                                )
+                                b = -1
+                                break
+                            } // waited for 3+ sec, that's enough
+                            else {
+                                console.warn('skipping broken images')
+                                continue // skip the broken image
                             }
-                            if (b !== -1) {
-                                i = f[b]
-                                console.warn('showing biggest image')
-                            }
+                        } else if (
+                            f[n].naturalWidth * f[n].naturalHeight >=
+                                f[b].naturalWidth * f[b].naturalHeight
+                        ) {
+                            b = n
                         }
                     }
-                    break
+                    if (b !== -1) {
+                        i = f[b]
+                        console.warn('showing biggest image')
+                    }
+                }
             }
             break
+        }
+        break
     }
     //
     //firefox handmade noscript
@@ -3268,9 +3269,9 @@ function makeworld() {
         }
         if (
             i.nodeName === 'VIDEO' ||
-            ext_list_video.indexOf(
-                i.src.split('.').pop().split('?')[0].toLowerCase()
-            ) >= 0
+                ext_list_video.indexOf(
+                    i.src.split('.').pop().split('?')[0].toLowerCase()
+                ) >= 0
         ) {
             console.log('Found a video')
             is_video = true
@@ -3325,15 +3326,15 @@ function use_booru_tags_in_dl_filename() {
     }
 
     /*if(character.length === 0)
-	{
-		let franchise = document.querySelectorAll(".tag-type-copyright > a, .copyright-tag > a, .copyright-tag-list a.search-tag");
-		for(let n = 0; n < franchise.length; n++)
-		{
-			if(franchise[n].text == "?") continue;
-			filename = franchise[n].text.replaceAll(" ", "_") + " " + filename;
-			break; // just one cuz else it'd get long
-		}
-	}*/
+    {
+    let franchise = document.querySelectorAll(".tag-type-copyright > a, .copyright-tag > a, .copyright-tag-list a.search-tag");
+    for(let n = 0; n < franchise.length; n++)
+    {
+    if(franchise[n].text == "?") continue;
+    filename = franchise[n].text.replaceAll(" ", "_") + " " + filename;
+    break; // just one cuz else it'd get long
+    }
+    }*/
     let general_tags = document.querySelectorAll(
         ".tag-link, .tag-type-general a:not([href*='/books?'])[href*='tags='], .tag-type-genre > a, .general-tag > a, .general-tag-list > .tag-type-0 > a.search-tag, a.search-tag, div#tagLink > a,.tags-list a"
     )
@@ -3368,8 +3369,8 @@ function use_booru_tags_in_dl_filename() {
                 ) {
                     filename =
                         general_tags[n].text.replaceAll(' ', '_') +
-                        ' ' +
-                        filename
+                            ' ' +
+                            filename
                 }
             }
         }
@@ -3384,13 +3385,13 @@ function onvolumechange() {
 
 function changeCursor() {
     /*if(i.scrollHeight > iViewHeight) // image pushing out-of-screen browser fix
-	{
-		i.style.margin = "0px auto";
-	}
-	else
-	{
-		i.style.margin = "auto";
-	}*/
+    {
+    i.style.margin = "0px auto";
+    }
+    else
+    {
+    i.style.margin = "auto";
+    }*/
 
     if (is_video) return
 
@@ -3398,7 +3399,7 @@ function changeCursor() {
         // original
         if (
             (orgImgWidth == viewWidth && orgImgHeight <= viewHeight) ||
-            (orgImgWidth <= viewWidth && orgImgHeight == viewHeight)
+                (orgImgWidth <= viewWidth && orgImgHeight == viewHeight)
         ) {
             // perfect fit on one side, can't resize
             // with zoom there might be a 1 pixel difference and it's not a matter of rounding, e.g. image is 501.03 width and the window is 501.55 width so there won't be a perfect fit even tho both the image and your screen (window) are 1920px wide
@@ -3422,7 +3423,7 @@ function changeCursor() {
     else {
         if (
             (orgImgWidth == viewWidth && orgImgHeight <= viewHeight) ||
-            (orgImgWidth <= viewWidth && orgImgHeight == viewHeight)
+                (orgImgWidth <= viewWidth && orgImgHeight == viewHeight)
         ) {
             // perfect fit on one side, can't resize
             i.style.cursor = ''
@@ -3582,23 +3583,23 @@ function autoresize() {
         }
         filename = filename + title + filename_ext
         /*let link = protected_createElement('link');
-		link.rel = 'icon';
-		link.href = i.src;
-		document.head.appendChild(link);*/ // big lag in general from this feature
+	link.rel = 'icon';
+	link.href = i.src;
+	document.head.appendChild(link);*/ // big lag in general from this feature
         let InitRescale = false
         if (cfg_fitWH && orgImgHeight > viewHeight && orgImgWidth > viewWidth) {
             // both scrollbars
             InitRescale = true
         } else if (
             cfg_fitB &&
-            (orgImgHeight > viewHeight || orgImgWidth > viewWidth)
+                (orgImgHeight > viewHeight || orgImgWidth > viewWidth)
         ) {
             // one scrollbar
             InitRescale = true
         } else if (
             cfg_fitS &&
-            orgImgHeight <= viewHeight &&
-            orgImgWidth <= viewWidth
+                orgImgHeight <= viewHeight &&
+                orgImgWidth <= viewWidth
         ) {
             // no scrollbars
             InitRescale = true
@@ -3741,11 +3742,11 @@ function onkeydown(b) {
     }
     if (
         b.altKey ||
-        b.metaKey ||
-        (b.ctrlKey &&
-            a != KeyEvent.DOM_VK_SPACE &&
-            a != KeyEvent.DOM_VK_F5 &&
-            a != KeyEvent.DOM_VK_R)
+            b.metaKey ||
+            (b.ctrlKey &&
+                a != KeyEvent.DOM_VK_SPACE &&
+                a != KeyEvent.DOM_VK_F5 &&
+                a != KeyEvent.DOM_VK_R)
     ) {
         return
     }
@@ -3753,80 +3754,80 @@ function onkeydown(b) {
     let by = Math.round(viewHeight * 0.1)
 
     switch (a) {
-        case KeyEvent.DOM_VK_RIGHT:
-        case KeyEvent.DOM_VK_D:
-        case KeyEvent.DOM_VK_NUMPAD6:
-            if (!is_video) {
-                window.scrollBy(by, 0)
-                cancelEvent(b)
-            } else {
-                i.currentTime += skip_by
-            }
-            break
-        case KeyEvent.DOM_VK_LEFT:
-        case KeyEvent.DOM_VK_A:
-        case KeyEvent.DOM_VK_NUMPAD4:
-            if (!is_video) {
-                window.scrollBy(by * -1, 0)
-                cancelEvent(b)
-            } else {
-                i.currentTime -= skip_by
-            }
-            break
-        case KeyEvent.DOM_VK_W:
-        case KeyEvent.DOM_VK_NUMPAD8:
-            window.scrollBy(0, by * -1)
+    case KeyEvent.DOM_VK_RIGHT:
+    case KeyEvent.DOM_VK_D:
+    case KeyEvent.DOM_VK_NUMPAD6:
+        if (!is_video) {
+            window.scrollBy(by, 0)
             cancelEvent(b)
-            break
-        case KeyEvent.DOM_VK_S:
-        case KeyEvent.DOM_VK_NUMPAD2:
-            window.scrollBy(0, by)
+        } else {
+            i.currentTime += skip_by
+        }
+        break
+    case KeyEvent.DOM_VK_LEFT:
+    case KeyEvent.DOM_VK_A:
+    case KeyEvent.DOM_VK_NUMPAD4:
+        if (!is_video) {
+            window.scrollBy(by * -1, 0)
             cancelEvent(b)
-            break
-        case KeyEvent.DOM_VK_SPACE:
-            if (!is_video) {
-                scroll_space(b.shiftKey, b.ctrlKey)
-            } else if (i.paused || i.ended) {
-                i.play()
-            } else {
-                i.pause()
-            }
+        } else {
+            i.currentTime -= skip_by
+        }
+        break
+    case KeyEvent.DOM_VK_W:
+    case KeyEvent.DOM_VK_NUMPAD8:
+        window.scrollBy(0, by * -1)
+        cancelEvent(b)
+        break
+    case KeyEvent.DOM_VK_S:
+    case KeyEvent.DOM_VK_NUMPAD2:
+        window.scrollBy(0, by)
+        cancelEvent(b)
+        break
+    case KeyEvent.DOM_VK_SPACE:
+        if (!is_video) {
+            scroll_space(b.shiftKey, b.ctrlKey)
+        } else if (i.paused || i.ended) {
+            i.play()
+        } else {
+            i.pause()
+        }
+        cancelEvent(b)
+        break
+    case KeyEvent.DOM_VK_M:
+        i.muted = !i.muted
+        cancelEvent(b)
+        break
+    case KeyEvent.DOM_VK_F:
+        i.requestFullscreen()
+        cancelEvent(b)
+        break
+    case KeyEvent.DOM_VK_TAB:
+    case KeyEvent.DOM_VK_ENTER:
+        rescale(null, true)
+        cancelEvent(b)
+        break
+    case KeyEvent.DOM_VK_Q:
+    case KeyEvent.DOM_VK_NUMPAD5:
+        rescale(null, false)
+        cancelEvent(b)
+        break
+    case KeyEvent.DOM_VK_P:
+        cfg()
+        cancelEvent(b)
+        break
+    case KeyEvent.DOM_VK_R:
+        if (!b.ctrlKey) {
+            sessionStorage.hji = window.location.href
+            window.location.reload()
             cancelEvent(b)
-            break
-        case KeyEvent.DOM_VK_M:
-            i.muted = !i.muted
-            cancelEvent(b)
-            break
-        case KeyEvent.DOM_VK_F:
-            i.requestFullscreen()
-            cancelEvent(b)
-            break
-        case KeyEvent.DOM_VK_TAB:
-        case KeyEvent.DOM_VK_ENTER:
-            rescale(null, true)
-            cancelEvent(b)
-            break
-        case KeyEvent.DOM_VK_Q:
-        case KeyEvent.DOM_VK_NUMPAD5:
-            rescale(null, false)
-            cancelEvent(b)
-            break
-        case KeyEvent.DOM_VK_P:
-            cfg()
-            cancelEvent(b)
-            break
-        case KeyEvent.DOM_VK_R:
-            if (!b.ctrlKey) {
-                sessionStorage.hji = window.location.href
-                window.location.reload()
-                cancelEvent(b)
-            } else {
-                window.removeEventListener('beforeunload', onbeforeunload, true)
-            }
-            break
-        case KeyEvent.DOM_VK_F5:
+        } else {
             window.removeEventListener('beforeunload', onbeforeunload, true)
-            break
+        }
+        break
+    case KeyEvent.DOM_VK_F5:
+        window.removeEventListener('beforeunload', onbeforeunload, true)
+        break
     }
 }
 
@@ -3862,14 +3863,14 @@ function cfg() {
             'margin: auto; width: fit-content; height: fit-content; border: 2px solid black; color: white; background: #5a5757; position: absolute; inset: 0;' // chrome "force dark mode" ignores our colors and just makes text white... great
         div.innerHTML =
             "<b><center>Configuration</center></b><br><input id='hji_cfg_1_direct' type='checkbox'> Open images directly with browser (disables Handy)" +
-            "<br><br><input id='hji_cfg_2_bgclr' style='color: inherit; background: inherit;' type='text' size='6'> Background color (empty = default)" +
-            '<br><br>Fit to window images:' +
-            " ( Fill to window instead <input id='hji_cfg_7_fitOS' type='checkbox'> )" +
-            "<br><br><input id='hji_cfg_3_fitWH' type='checkbox'> Larger than window both vertically and horizontally" +
-            "<br><br><input id='hji_cfg_4_fitB' type='checkbox'> Larger than window either vertically or horizontally" +
-            "<br><br><input id='hji_cfg_5_fitS' type='checkbox'> Smaller than window" +
-            "<br><br><center>Custom JS Action:<br><textarea id='hji_cfg_6_js' style='margin: 0px; width: 400px; height: 50px; color: inherit; background: inherit;'></textarea>" +
-            "<br><input id='hji_cfg_save' style='color: inherit; background: inherit;' type='button' value='Save configuration'></center>"
+                "<br><br><input id='hji_cfg_2_bgclr' style='color: inherit; background: inherit;' type='text' size='6'> Background color (empty = default)" +
+                '<br><br>Fit to window images:' +
+                " ( Fill to window instead <input id='hji_cfg_7_fitOS' type='checkbox'> )" +
+                "<br><br><input id='hji_cfg_3_fitWH' type='checkbox'> Larger than window both vertically and horizontally" +
+                "<br><br><input id='hji_cfg_4_fitB' type='checkbox'> Larger than window either vertically or horizontally" +
+                "<br><br><input id='hji_cfg_5_fitS' type='checkbox'> Smaller than window" +
+                "<br><br><center>Custom JS Action:<br><textarea id='hji_cfg_6_js' style='margin: 0px; width: 400px; height: 50px; color: inherit; background: inherit;'></textarea>" +
+                "<br><input id='hji_cfg_save' style='color: inherit; background: inherit;' type='button' value='Save configuration'></center>"
         document.body.appendChild(div)
         q('#hji_cfg_1_direct').checked = cfg_direct
         q('#hji_cfg_2_bgclr').value = cfg_bgclr
